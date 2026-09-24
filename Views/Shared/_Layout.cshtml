@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - StudentHub</title>
+
+    <script type="importmap"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" />
+
+    <link rel="stylesheet"
+      href="~/css/Layout.css"
+      asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/StudentHub.styles.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+        href="~/StudentHub.styles.css"
+        asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+
+          
+</head>
+
+<body>
+
+    <div class="app-shell">
+
+        <!-- =====================================================
+             SIDEBAR
+             ===================================================== -->
+        <aside class="sidebar" id="sidebar">
+
+            <!-- Brand -->
+            <a class="brand"
+               asp-controller="Dashboard"
+               asp-action="Index">
+
+                <span class="brand-mark" aria-hidden="true">
+
+                    <svg viewBox="0 0 48 48">
+                        <path d="M4 13.5 24 5l20 8.5L24 22 4 13.5Z" />
+                        <path d="M10 17v9.5L24 32l14-5.5V17" />
+                        <path d="M44 14v13" />
+                        <path d="M24 22v10" />
+                        <path d="M17 28v7l7 4 7-4v-7" />
+                    </svg>
+
+                </span>
+
+                <span class="brand-content">
+
+                    <strong>StudentHub</strong>
+
+                    <small>
+                        Your Academic Journey
+                        <br />
+                        In One Place
+                    </small>
+
+                </span>
+
+            </a>
+
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav" aria-label="Main navigation">
+
+                <!-- Dashboard -->
+                <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")"
+                   asp-controller="Dashboard"
+                   asp-action="Index">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 11.5 12 4l9 7.5" />
+                            <path d="M5.5 10.5V20h13v-9.5" />
+                            <path d="M9.5 20v-5.5h5V20" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">Dashboard</span>
+
+                </a>
+
+
+                <!-- My Courses -->
+                <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Courses" ? "active" : "")"
+                   asp-controller="Academic"
+                   asp-action="Courses">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" />
+                            <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22V5.5Z" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">My Courses</span>
+
+                    <span class="nav-chevron" aria-hidden="true">›</span>
+
+                </a>
+
+
+                <!-- Assignments -->
+                <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Assignments" ? "active" : "")"
+                   asp-controller="Assignments"
+                   asp-action="Index">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
+                            <path d="M14 3v5h5" />
+                            <path d="M8 13h8M8 17h6" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">Assignments</span>
+
+                </a>
+
+
+                <!-- Exams -->
+                <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Exams" ? "active" : "")"
+                   asp-controller="Academic"
+                   asp-action="Exams">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 3h8l1 3-2 15H9L7 6l1-3Z" />
+                            <path d="M9 6h6" />
+                            <path d="M10 10h4M10 14h4" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">Exams</span>
+
+                </a>
+
+
+                <!-- GPA Calculator -->
+                <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Gpa" ? "active" : "")"
+                   asp-controller="Academic"
+                   asp-action="Gpa">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="8.5" />
+                            <path d="M12 8v4l3 2" />
+                            <path d="M6.5 6.5 5 5M17.5 6.5 19 5" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">GPA Calculator</span>
+
+                </a>
+
+
+                <!-- Degree Tracker -->
+                <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "DegreeTracker" ? "active" : "")"
+                   asp-controller="Academic"
+                   asp-action="DegreeTracker">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="8.5" />
+                            <circle cx="12" cy="12" r="3" />
+                            <path d="m17.5 6.5 2-2" />
+                            <path d="M19 4.5h-3" />
+                            <path d="M19.5 4.5v3" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">Degree Tracker</span>
+
+                </a>
+
+
+                <!-- Grades -->
+                <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Grades" ? "active" : "")"
+                   asp-controller="Academic"
+                   asp-action="Grades">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 19V10" />
+                            <path d="M9 19V5" />
+                            <path d="M14 19v-8" />
+                            <path d="M19 19V8" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">Grades &amp; Performance</span>
+
+                </a>
+
+
+                <!-- Library -->
+                <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Library" ? "active" : "")"
+                   asp-controller="Library"
+                   asp-action="Index">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" />
+                            <path d="M8 7h8M8 11h8M8 15h5" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">StudentHub Library</span>
+
+                </a>
+
+
+                <!-- Divider -->
+                <div class="nav-divider"></div>
+
+
+                <!-- Calendar -->
+                <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Calendar" ? "active" : "")"
+                   asp-controller="Schedule"
+                   asp-action="Calendar">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="4" width="18" height="17" rx="2" />
+                            <path d="M7 2v4M17 2v4M3 9h18" />
+                            <path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">Calendar</span>
+
+                </a>
+
+
+                <!-- Weekly Schedule -->
+                <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Weekly" ? "active" : "")"
+                   asp-controller="Schedule"
+                   asp-action="Weekly">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="8.5" />
+                            <path d="M12 7v5l3.5 2" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">Weekly Schedule</span>
+
+                </a>
+
+
+                <!-- Notifications -->
+                <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Notifications" ? "active" : "")"
+                   asp-controller="Notifications"
+                   asp-action="Index">
+
+                    <span class="nav-icon notification-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" />
+                            <path d="M10 21h4" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">Notifications</span>
+
+                    <span class="sidebar-badge">3</span>
+
+                </a>
+
+
+                <!-- Settings -->
+                <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Settings" ? "active" : "")"
+                   asp-controller="Settings"
+                   asp-action="Index">
+
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3" />
+                            <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-2.5V20a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 8 15a1.7 1.7 0 0 0-1.6-1H6v-2.5h.4A1.7 1.7 0 0 0 8 10a1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6v-.2h2.5V5a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2V14h-.2a1.7 1.7 0 0 0-1.6 1Z" />
+                        </svg>
+                    </span>
+
+                    <span class="nav-label">Settings</span>
+
+                    <span class="nav-chevron" aria-hidden="true">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+
+                <div class="footer-university">
+                    Arabian Gulf University
+                </div>
+
+                <div class="footer-tagline">
+                    Knowledge for a Better Tomorrow
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================================
+             PAGE WRAPPER
+             ===================================================== -->
+        <div class="page-wrap">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <button
+                    class="menu-button"
+                    type="button"
+                    aria-label="Open navigation"
+                    data-menu-toggle>
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 7h16M4 12h16M4 17h16" />
+                    </svg>
+
+                </button>
+
+
+                <!-- Search -->
+                <label class="search">
+
+                    <span class="search-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="10.8" cy="10.8" r="6.5" />
+                            <path d="m16 16 4 4" />
+                        </svg>
+                    </span>
+
+                    <input
+                        aria-label="Search"
+                        placeholder="Search for courses, assignments, documents..." />
+
+                    <kbd>Ctrl + K</kbd>
+
+                </label>
+
+
+                <!-- Top Actions -->
+                <div class="top-actions">
+
+                    <button
+                        class="bell"
+                        type="button"
+                        aria-label="Notifications">
+
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" />
+                            <path d="M10 21h4" />
+                        </svg>
+
+                        <b>3</b>
+
+                    </button>
+
+
+                    <span class="top-separator"></span>
+
+
+                    <div class="profile-avatar">
+                        SA
+                    </div>
+
+
+                    <div class="profile-text">
+
+                        <strong>Sara Ahmed</strong>
+
+                        <small>
+                            Doctor of Medicine
+                        </small>
+
+                    </div>
+
+
+                    <button
+                        class="chevron"
+                        type="button"
+                        aria-label="Account menu">
+
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="m7 9 5 5 5-5" />
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- Main Content -->
+            <main role="main" class="page-content">
+
+                @RenderBody()
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

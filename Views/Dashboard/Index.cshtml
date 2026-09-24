@@ -1,0 +1,587 @@
+@model DashboardViewModel
+
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var requiredCredits = Model.RequiredCredits <= 0 ? 1 : Model.RequiredCredits;
+    var completedCredits = Model.CompletedCredits;
+    var progress = Math.Min(100, (completedCredits * 100) / requiredCredits);
+    var remainingCredits = Math.Max(0, Model.RequiredCredits - Model.CompletedCredits);
+    <link rel="stylesheet" href="~/css/Dashborad.css" />
+}
+
+<div class="studenthub-dashboard">
+
+    <!-- =========================================================
+         WELCOME / HERO
+         ========================================================= -->
+    <section class="dashboard-hero">
+
+        <div class="dashboard-hero-content">
+            <p class="hero-greeting">Good morning,</p>
+
+            <h1>
+                @Model.StudentName
+                <span class="hero-wave" aria-hidden="true">👋</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Stay consistent, keep going. You're building your future!
+            </p>
+        </div>
+
+        <div class="hero-university">
+            <div class="university-seal">
+                <div class="university-seal-inner">
+                    AGU
+                </div>
+            </div>
+
+            <strong>Arabian Gulf University</strong>
+            <span>Knowledge for a Better Tomorrow</span>
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         METRICS
+         ========================================================= -->
+    <section class="metrics-grid">
+
+        <!-- Current GPA -->
+        <article class="metric-card">
+
+            <div class="metric-icon metric-icon-gold">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5Z" />
+                    <path d="M6 10.5V16l6 3 6-3v-5.5" />
+                    <path d="M21 8v6" />
+                </svg>
+            </div>
+
+            <div class="metric-content">
+                <p>Current GPA</p>
+
+                <strong class="metric-value">
+                    @Model.CurrentGpa
+                    <em>/ 4.0</em>
+                </strong>
+
+                <small class="metric-positive">
+                    <span>↗</span>
+                    +0.12
+                    <span class="metric-muted">from last semester</span>
+                </small>
+            </div>
+
+            <div class="metric-small-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="8" />
+                    <path d="M12 8v4l3 2" />
+                </svg>
+            </div>
+
+        </article>
+
+
+        <!-- Degree Progress -->
+        <article class="metric-card metric-card-progress">
+
+            <div
+                class="progress-ring"
+                style="--progress: @progress%;"
+                aria-label="Degree progress @progress percent">
+
+                <div class="progress-ring-inner">
+                    <strong>@progress%</strong>
+                </div>
+
+            </div>
+
+            <div class="metric-content">
+                <p>Degree Progress</p>
+
+                <strong class="metric-value">
+                    @remainingCredits hours
+                </strong>
+
+                <small>
+                    remaining to graduate
+                </small>
+
+                <small class="credit-progress">
+                    <strong>@Model.CompletedCredits</strong>
+                    / @Model.RequiredCredits credits completed
+                </small>
+            </div>
+
+        </article>
+
+
+        <!-- Enrolled Courses -->
+        <article class="metric-card">
+
+            <div class="metric-icon metric-icon-green">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" />
+                    <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22V5.5Z" />
+                </svg>
+            </div>
+
+            <div class="metric-content">
+                <p>Enrolled Courses</p>
+
+                <strong class="metric-value">5</strong>
+
+                <small>This Semester</small>
+            </div>
+
+        </article>
+
+
+        <!-- Pending Assignments -->
+        <article class="metric-card metric-card-warning">
+
+            <div class="metric-icon metric-icon-orange">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 4h10v3h3v14H4V7h3V4Z" />
+                    <path d="M9 4h6v4H9V4Z" />
+                    <path d="m8 14 2 2 5-5" />
+                </svg>
+            </div>
+
+            <div class="metric-content">
+                <p class="metric-warning-title">
+                    Pending Assignments
+                </p>
+
+                <strong class="metric-value">3</strong>
+
+                <small class="metric-warning-text">
+                    Due soon
+                </small>
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- =========================================================
+         MAIN DASHBOARD GRID
+         ========================================================= -->
+    <section class="dashboard-grid">
+
+
+        <!-- =====================================================
+             TODAY'S CLASSES
+             ===================================================== -->
+        <article class="dashboard-panel today\'s-classes-panel">
+
+            <div class="panel-heading">
+
+                <div class="panel-title">
+                    <span class="panel-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="3" y="5" width="18" height="16" rx="2" />
+                            <path d="M7 3v4M17 3v4M3 10h18" />
+                            <path d="M8 14h2M14 14h2M8 18h2" />
+                        </svg>
+                    </span>
+
+                    <h2>Today's Classes</h2>
+                </div>
+
+                <a
+                    asp-controller="Schedule"
+                    asp-action="Weekly"
+                    class="panel-link">
+                    View Schedule
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </div>
+
+
+            <div class="classes-list">
+
+                @foreach (var item in Model.TodayClasses)
+                {
+                    <div class="class-row">
+
+                        <div class="class-time">
+                            <strong>@item.Time</strong>
+                        </div>
+
+                        <div class="class-timeline">
+                            <span class="timeline-dot @item.Color"></span>
+                            <span class="timeline-line"></span>
+                        </div>
+
+                        <div class="class-information">
+                            <strong>@item.Name</strong>
+                            <small>@item.Code</small>
+                        </div>
+
+                        <div class="class-start">
+                            <span>Starts in</span>
+                            <strong>45 min</strong>
+                        </div>
+
+                        <div class="class-room">
+                            <span>@item.Room</span>
+                        </div>
+
+                        <span class="row-arrow" aria-hidden="true">›</span>
+
+                    </div>
+                }
+
+            </div>
+
+        </article>
+
+
+        <!-- =====================================================
+             UPCOMING ASSIGNMENTS
+             ===================================================== -->
+        <article class="dashboard-panel assignments-panel">
+
+            <div class="panel-heading">
+
+                <div class="panel-title">
+                    <span class="panel-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
+                            <path d="M14 3v5h5" />
+                            <path d="M8 13h8M8 17h6" />
+                        </svg>
+                    </span>
+
+                    <h2>Upcoming Assignments</h2>
+                </div>
+
+                <a
+                    asp-controller="Assignments"
+                    asp-action="Index"
+                    class="panel-link">
+                    View All
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </div>
+
+
+            <div class="assignments-list">
+
+                @foreach (var item in Model.Assignments.Take(4))
+                {
+                    <div class="assignment-row">
+
+                        <span class="assignment-color @item.Color"></span>
+
+                        <div class="assignment-information">
+                            <strong>@item.Name</strong>
+                            <small>@item.Course</small>
+                        </div>
+
+                        <div class="assignment-meta">
+                            <span>@item.Due</span>
+
+                            <b class="priority-pill @item.Priority.ToLowerInvariant()">
+                                @item.Priority
+                            </b>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </article>
+
+
+        <!-- =====================================================
+             UPCOMING EXAMS
+             ===================================================== -->
+        <article class="dashboard-panel exams-panel">
+
+            <div class="panel-heading">
+
+                <div class="panel-title">
+                    <span class="panel-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M8 3h8l1 3-2 15H9L7 6l1-3Z" />
+                            <path d="M9 6h6M10 10h4M10 14h4" />
+                        </svg>
+                    </span>
+
+                    <h2>Upcoming Exams</h2>
+                </div>
+
+                <a
+                    asp-controller="Academic"
+                    asp-action="Exams"
+                    class="panel-link">
+                    View All
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </div>
+
+
+            <div class="exams-list">
+
+                @foreach (var item in Model.Exams.Take(3))
+                {
+                    <div class="exam-row">
+
+                        <span class="exam-color"></span>
+
+                        <div class="exam-information">
+                            <strong>@item.Name</strong>
+                            <small>@item.Course</small>
+                        </div>
+
+                        <div class="exam-meta">
+
+                            <div class="exam-date">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="3" y="5" width="18" height="16" rx="2" />
+                                    <path d="M7 3v4M17 3v4M3 10h18" />
+                                </svg>
+
+                                <span>@item.Date</span>
+                            </div>
+
+                            <small>@item.Countdown</small>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </article>
+
+
+        <!-- =====================================================
+             CALENDAR PREVIEW
+             ===================================================== -->
+        <article class="dashboard-panel calendar-panel">
+
+            <div class="panel-heading">
+
+                <div class="panel-title">
+                    <span class="panel-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="3" y="4" width="18" height="17" rx="2" />
+                            <path d="M7 2v4M17 2v4M3 9h18" />
+                        </svg>
+                    </span>
+
+                    <h2>Calendar Preview</h2>
+                </div>
+
+                <a
+                    asp-controller="Schedule"
+                    asp-action="Calendar"
+                    class="panel-link">
+                    View Calendar
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </div>
+
+
+            <div class="calendar-header">
+
+                <h3>September 2026</h3>
+
+                <div class="calendar-navigation">
+                    <button type="button" aria-label="Previous month">
+                        ←
+                    </button>
+
+                    <button type="button" aria-label="Next month">
+                        →
+                    </button>
+                </div>
+
+            </div>
+
+
+            <div class="calendar-grid">
+
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+
+                <b class="calendar-muted">30</b>
+                <b class="calendar-muted">31</b>
+
+                @for (var day = 1; day <= 30; day++)
+                {
+                    var dayClass = day == 15
+                        ? "calendar-day today"
+                        : "calendar-day";
+
+                    <b class="@dayClass">
+                        @day
+
+                        @if (day == 2)
+                        {
+                            <i class="calendar-marker assignment-marker"></i>
+                        }
+
+                        @if (day == 5)
+                        {
+                            <i class="calendar-marker exam-marker"></i>
+                        }
+
+                        @if (day == 9)
+                        {
+                            <i class="calendar-marker assignment-marker"></i>
+                        }
+
+                        @if (day == 11)
+                        {
+                            <i class="calendar-marker class-marker"></i>
+                        }
+
+                        @if (day == 18)
+                        {
+                            <i class="calendar-marker exam-marker"></i>
+                        }
+
+                        @if (day == 22)
+                        {
+                            <i class="calendar-marker assignment-marker"></i>
+                        }
+
+                        @if (day == 25)
+                        {
+                            <i class="calendar-marker exam-marker"></i>
+                        }
+                    </b>
+                }
+
+            </div>
+
+
+            <div class="calendar-legend">
+
+                <span>
+                    <i class="legend-dot class-dot"></i>
+                    Class
+                </span>
+
+                <span>
+                    <i class="legend-dot assignment-dot"></i>
+                    Assignment
+                </span>
+
+                <span>
+                    <i class="legend-dot exam-dot"></i>
+                    Exam
+                </span>
+
+                <span>
+                    <i class="legend-dot other-dot"></i>
+                    Other
+                </span>
+
+            </div>
+
+        </article>
+
+
+        <!-- =====================================================
+             RECENT NOTIFICATIONS
+             ===================================================== -->
+        <article class="dashboard-panel notifications-panel">
+
+            <div class="panel-heading">
+
+                <div class="panel-title">
+                    <span class="panel-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" />
+                            <path d="M10 21h4" />
+                        </svg>
+                    </span>
+
+                    <h2>Recent Notifications</h2>
+                </div>
+
+                <a
+                    asp-controller="Notifications"
+                    asp-action="Index"
+                    class="panel-link">
+                    View All
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </div>
+
+
+            <div class="notifications-list">
+
+                @foreach (var item in Model.Notifications)
+                {
+                    <div class="notification-row">
+
+                        <span class="notification-dot @item.Color"></span>
+
+                        <div class="notification-information">
+                            <strong>@item.Title</strong>
+                            <small>@item.Message</small>
+                        </div>
+
+                        <time>@item.Time</time>
+
+                    </div>
+                }
+
+            </div>
+
+        </article>
+
+
+        <!-- =====================================================
+             QUOTE
+             ===================================================== -->
+        <aside class="dashboard-quote">
+
+            <div class="quote-overlay"></div>
+
+            <div class="quote-content">
+
+                <blockquote>
+                    “A little progress
+                    <br />
+                    each day adds up
+                    <br />
+                    to big results.”
+                </blockquote>
+
+                <span class="quote-line"></span>
+
+                <p>
+                    Keep going! 🌿
+                </p>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+</div>

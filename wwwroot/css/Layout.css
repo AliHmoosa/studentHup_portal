@@ -1,0 +1,1123 @@
+﻿/* ============================================================
+   STUDENTHUB GLOBAL BASE
+   ============================================================ */
+
+:root {
+    --studenthub-teal-950: #073d3b;
+    --studenthub-teal-900: #084846;
+    --studenthub-teal-800: #075653;
+    --studenthub-teal-700: #08736d;
+
+    --studenthub-active: #138f82;
+    --studenthub-active-light: rgba(27, 161, 145, 0.48);
+
+    --studenthub-white: #ffffff;
+    --studenthub-text: #10253d;
+    --studenthub-muted: #a9c2c1;
+
+    --studenthub-page: #f6f8f8;
+    --studenthub-border: #e7ecec;
+
+    --sidebar-width: 255px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    min-height: 100%;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    min-height: 100%;
+
+    font-family:
+        "DM Sans",
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: var(--studenthub-text);
+
+    background: var(--studenthub-page);
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    border: 0;
+}
+
+a {
+    color: inherit;
+}
+
+img,
+svg {
+    display: block;
+}
+
+
+/* ============================================================
+   APPLICATION SHELL
+   ============================================================ */
+
+.app-shell {
+    display: flex;
+
+    width: 100%;
+    min-height: 100vh;
+
+    background: var(--studenthub-page);
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    z-index: 1000;
+
+    width: var(--sidebar-width);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    color: var(--studenthub-white);
+
+    background:
+        linear-gradient(
+            180deg,
+            #073f3d 0%,
+            #084d4a 43%,
+            #063e3c 100%
+        );
+
+    box-shadow:
+        3px 0 18px rgba(4, 48, 47, 0.08);
+}
+
+
+/* ============================================================
+   SIDEBAR BACKGROUND DECORATION
+   ============================================================ */
+
+.sidebar::before {
+    content: "";
+
+    position: absolute;
+
+    left: -90px;
+    bottom: -100px;
+
+    width: 390px;
+    height: 300px;
+
+    opacity: 0.09;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #b8d2ca 0%,
+            rgba(184, 210, 202, 0.25) 38%,
+            transparent 70%
+        );
+
+    filter: blur(1px);
+}
+
+.sidebar::after {
+    content: "";
+
+    position: absolute;
+
+    right: -90px;
+    top: 100px;
+
+    width: 190px;
+    height: 250px;
+
+    opacity: 0.035;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse,
+            #ffffff,
+            transparent 70%
+        );
+}
+
+
+/* ============================================================
+   BRAND
+   ============================================================ */
+
+.brand {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    min-height: 104px;
+
+    padding:
+        21px
+        18px
+        13px
+        27px;
+
+    color: #ffffff;
+
+    text-decoration: none;
+}
+
+.brand-mark {
+    flex: 0 0 auto;
+
+    width: 39px;
+    height: 39px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-mark svg {
+    width: 39px;
+    height: 39px;
+
+    fill: #f5dca0;
+
+    stroke: #f5dca0;
+
+    stroke-width: 1.2;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.brand-content {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-content > strong {
+    display: block;
+
+    margin-top: 1px;
+
+    color: #ffffff;
+
+    font-size: 22px;
+    line-height: 1.15;
+
+    font-weight: 700;
+
+    letter-spacing: -0.4px;
+}
+
+.brand-content small {
+    display: block;
+
+    margin-top: 9px;
+
+    color: rgba(230, 243, 241, 0.73);
+
+    font-size: 11px;
+    line-height: 1.42;
+
+    font-weight: 400;
+}
+
+
+/* ============================================================
+   SIDEBAR NAVIGATION
+   ============================================================ */
+
+.sidebar-nav {
+    position: relative;
+    z-index: 2;
+
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding:
+        5px
+        11px
+        12px;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.13);
+
+    border-radius: 10px;
+}
+
+
+/* ============================================================
+   NAV ITEM
+   ============================================================ */
+
+.nav-item {
+    position: relative;
+
+    min-height: 47px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    margin: 2px 0;
+
+    padding:
+        0
+        13px
+        0
+        15px;
+
+    border-radius: 9px;
+
+    color: rgba(245, 252, 251, 0.91);
+
+    text-decoration: none;
+
+    transition:
+        background-color 160ms ease,
+        color 160ms ease,
+        transform 160ms ease;
+}
+
+.nav-item:hover {
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.065);
+}
+
+.nav-item.active {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(18, 157, 142, 0.92),
+            rgba(19, 143, 130, 0.86)
+        );
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.045);
+}
+
+.nav-item.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    width: 3px;
+    height: 23px;
+
+    border-radius: 0 4px 4px 0;
+
+    background: #d8f0e9;
+}
+
+.nav-icon {
+    flex: 0 0 auto;
+
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(240, 250, 248, 0.96);
+}
+
+.nav-icon svg {
+    width: 22px;
+    height: 22px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.65;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.nav-item.active .nav-icon {
+    color: #ffffff;
+}
+
+.nav-label {
+    min-width: 0;
+
+    flex: 1;
+
+    overflow: hidden;
+
+    color: inherit;
+
+    font-size: 14px;
+    line-height: 1.2;
+
+    font-weight: 500;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nav-chevron {
+    flex: 0 0 auto;
+
+    color: rgba(255,255,255,0.95);
+
+    font-size: 24px;
+    line-height: 1;
+
+    font-weight: 300;
+}
+
+.nav-item.active .nav-chevron {
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   NOTIFICATION BADGE
+   ============================================================ */
+
+.sidebar-badge {
+    flex: 0 0 auto;
+
+    min-width: 21px;
+    height: 21px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 5px;
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    background: #e9363d;
+
+    font-size: 10px;
+    line-height: 1;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 0 0 2px rgba(7, 63, 61, 0.9);
+}
+
+.nav-item.active .sidebar-badge {
+    box-shadow:
+        0 0 0 2px rgba(19, 143, 130, 0.9);
+}
+
+
+/* ============================================================
+   NAV DIVIDER
+   ============================================================ */
+
+.nav-divider {
+    height: 1px;
+
+    margin:
+        13px 15px
+        10px;
+
+    background: rgba(211, 232, 228, 0.22);
+}
+
+
+/* ============================================================
+   SIDEBAR FOOTER
+   ============================================================ */
+
+.sidebar-footer {
+    position: relative;
+    z-index: 3;
+
+    flex: 0 0 auto;
+
+    min-height: 108px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    padding:
+        17px
+        24px
+        19px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(4, 55, 53, 0) 0%,
+            rgba(4, 55, 53, 0.25) 100%
+        );
+}
+
+.footer-university {
+    color: rgba(255,255,255,0.95);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 16px;
+    line-height: 1.3;
+
+    font-weight: 400;
+}
+
+.footer-tagline {
+    margin-top: 5px;
+
+    color: rgba(221, 239, 236, 0.62);
+
+    font-size: 10px;
+    line-height: 1.3;
+}
+
+
+/* ============================================================
+   PAGE WRAPPER
+   ============================================================ */
+
+.page-wrap {
+    width: calc(100% - var(--sidebar-width));
+
+    min-width: 0;
+
+    min-height: 100vh;
+
+    margin-left: var(--sidebar-width);
+
+    background: var(--studenthub-page);
+}
+
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+
+.topbar {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 900;
+
+    min-height: 68px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    padding:
+        10px
+        27px;
+
+    background:
+        rgba(255,255,255,0.96);
+
+    border-bottom: 1px solid #edf1f1;
+
+    backdrop-filter: blur(10px);
+}
+
+
+/* ============================================================
+   MOBILE MENU BUTTON
+   ============================================================ */
+
+.menu-button {
+    display: none;
+
+    width: 40px;
+    height: 40px;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    color: var(--studenthub-teal-900);
+
+    background: transparent;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.menu-button svg {
+    width: 23px;
+    height: 23px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+}
+
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+
+.search {
+    width: min(565px, 100%);
+
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        0
+        9px
+        0
+        14px;
+
+    border: 1px solid #e3e9e9;
+
+    border-radius: 22px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 2px 8px rgba(16, 37, 61, 0.025);
+}
+
+.search-icon {
+    flex: 0 0 auto;
+
+    width: 19px;
+    height: 19px;
+
+    color: #74869a;
+}
+
+.search-icon svg {
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+}
+
+.search input {
+    min-width: 0;
+
+    flex: 1;
+
+    height: 100%;
+
+    padding: 0;
+
+    border: none;
+    outline: none;
+
+    color: var(--studenthub-text);
+
+    background: transparent;
+
+    font-size: 13px;
+}
+
+.search input::placeholder {
+    color: #7c899a;
+}
+
+.search kbd {
+    flex: 0 0 auto;
+
+    padding:
+        4px
+        8px;
+
+    border: 1px solid #e5e9ec;
+
+    border-radius: 5px;
+
+    color: #7d8997;
+
+    background: #f9fafb;
+
+    font-family:
+        "DM Sans",
+        sans-serif;
+
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   TOP ACTIONS
+   ============================================================ */
+
+.top-actions {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+.bell {
+    position: relative;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    color: var(--studenthub-teal-900);
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+.bell svg {
+    width: 24px;
+    height: 24px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.bell b {
+    position: absolute;
+
+    top: 0;
+    right: -1px;
+
+    min-width: 18px;
+    height: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    background: #e9363d;
+
+    font-size: 9px;
+    line-height: 1;
+
+    font-weight: 700;
+
+    border: 2px solid #ffffff;
+}
+
+.top-separator {
+    width: 1px;
+    height: 27px;
+
+    background: #d7dfe0;
+}
+
+.profile-avatar {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            145deg,
+            #be876e,
+            #6f473d
+        );
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.profile-text {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 115px;
+}
+
+.profile-text strong {
+    color: var(--studenthub-text);
+
+    font-size: 13px;
+    line-height: 1.25;
+
+    font-weight: 600;
+}
+
+.profile-text small {
+    margin-top: 2px;
+
+    color: var(--studenthub-muted);
+
+    font-size: 10px;
+    line-height: 1.25;
+}
+
+.chevron {
+    width: 25px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    color: var(--studenthub-text);
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+.chevron svg {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* ============================================================
+   PAGE CONTENT
+   ============================================================ */
+
+.page-content {
+    width: 100%;
+
+    min-height: calc(100vh - 68px);
+
+    padding:
+        10px
+        27px
+        30px;
+
+    background: var(--studenthub-page);
+}
+
+
+/* ============================================================
+   FOCUS / ACCESSIBILITY
+   ============================================================ */
+
+.nav-item:focus-visible,
+.brand:focus-visible,
+.menu-button:focus-visible,
+.bell:focus-visible,
+.chevron:focus-visible,
+.search input:focus-visible {
+    outline: 2px solid #8ad4c9;
+
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+    :root {
+        --sidebar-width: 235px;
+    }
+
+    .brand {
+        padding-left: 21px;
+    }
+
+    .sidebar-nav {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .nav-item {
+        padding-left: 12px;
+        padding-right: 11px;
+
+        gap: 10px;
+    }
+
+    .nav-label {
+        font-size: 13px;
+    }
+
+    .topbar {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .page-content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .profile-text {
+        min-width: 100px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+
+        transition:
+            transform 220ms ease;
+
+        box-shadow:
+            8px 0 28px rgba(4, 48, 47, 0.2);
+    }
+
+    .sidebar.is-open {
+        transform: translateX(0);
+    }
+
+    .page-wrap {
+        width: 100%;
+
+        margin-left: 0;
+    }
+
+    .menu-button {
+        display: flex;
+    }
+
+    .topbar {
+        gap: 10px;
+
+        padding:
+            10px
+            14px;
+    }
+
+    .search {
+        flex: 1;
+
+        max-width: none;
+    }
+
+    .search kbd {
+        display: none;
+    }
+
+    .profile-text,
+    .top-separator {
+        display: none;
+    }
+
+    .top-actions {
+        gap: 6px;
+    }
+
+    .profile-avatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .page-content {
+        padding:
+            12px
+            14px
+            24px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    .search {
+        height: 39px;
+
+        padding-left: 10px;
+    }
+
+    .search input {
+        font-size: 11px;
+    }
+
+    .bell {
+        width: 34px;
+        height: 34px;
+    }
+
+    .bell svg {
+        width: 21px;
+        height: 21px;
+    }
+
+    .chevron {
+        display: none;
+    }
+
+    .page-content {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+
+/* ============================================================
+   RTL PREPARATION
+   ============================================================ */
+
+/*
+    Arabic/RTL will be implemented later.
+
+    The layout intentionally keeps the navigation and content
+    structure independent from English-only positioning so that
+    RTL support can be added without rebuilding the sidebar.
+*/
+
+html[dir="rtl"] .sidebar {
+    left: auto;
+    right: 0;
+}
+
+html[dir="rtl"] .page-wrap {
+    margin-left: 0;
+    margin-right: var(--sidebar-width);
+}
+
+html[dir="rtl"] .nav-item {
+    flex-direction: row;
+}
+
+html[dir="rtl"] .nav-item.active::before {
+    left: auto;
+    right: 0;
+
+    border-radius:
+        4px
+        0
+        0
+        4px;
+}
+
+@media (max-width: 800px) {
+
+    html[dir="rtl"] .sidebar {
+        transform: translateX(100%);
+    }
+
+    html[dir="rtl"] .sidebar.is-open {
+        transform: translateX(0);
+    }
+
+    html[dir="rtl"] .page-wrap {
+        margin-right: 0;
+    }
+}

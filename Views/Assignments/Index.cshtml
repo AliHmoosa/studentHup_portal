@@ -1,0 +1,549 @@
+@model IReadOnlyList<AssignmentItem>
+
+@{
+    ViewData["Title"] = "Assignments";
+
+    var totalAssignments = Model.Count;
+    var completedAssignments = Model.Count(x =>
+        string.Equals(x.Status, "Completed", StringComparison.OrdinalIgnoreCase));
+
+    var overdueAssignments = Model.Count(x =>
+        string.Equals(x.Status, "Overdue", StringComparison.OrdinalIgnoreCase));
+
+    var upcomingAssignments = Math.Max(
+        0,
+        totalAssignments - completedAssignments - overdueAssignments
+    );
+
+    @section Styles {
+
+    <link rel="stylesheet"
+        href="~/StudentHub.styles.css"
+        asp-append-version="true" />
+    }
+
+
+}
+
+<section class="assignments-page">
+    <section class="assignments-hero">
+
+        <div class="assignments-hero-content">
+
+            <h1>Assignments</h1>
+
+            <p>
+                Keep track of your assignments and never miss a deadline.
+            </p>
+
+        </div>
+
+        <a class="assignments-add-button"
+           asp-action="Create">
+
+            <span class="add-icon" aria-hidden="true">+</span>
+
+            <span>Add Assignment</span>
+
+        </a>
+
+    </section>
+
+    <section class="assignment-tabs"
+             aria-label="Assignment status">
+
+        <button type="button" class="assignment-tab active">
+            <span>All Assignments</span>
+            <b>@totalAssignments</b>
+        </button>
+
+        <button type="button" class="assignment-tab">
+            <span>Upcoming</span>
+            <b>@upcomingAssignments</b>
+        </button>
+
+        <button type="button" class="assignment-tab">
+            <span>Overdue</span>
+            <b>@overdueAssignments</b>
+        </button>
+
+        <button type="button" class="assignment-tab">
+            <span>Completed</span>
+            <b>@completedAssignments</b>
+        </button>
+
+    </section>
+
+    <section class="assignment-layout">
+
+        <article class="assignment-table-panel">
+
+            <div class="assignment-toolbar">
+
+                <label class="assignment-search">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="10.8" cy="10.8" r="6.5" />
+                        <path d="m16 16 4 4" />
+                    </svg>
+
+                    <input
+                        type="search"
+                        placeholder="Search assignments..."
+                        aria-label="Search assignments" />
+
+                </label>
+
+
+                <button type="button" class="filter-button">
+                    <span>Course</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m7 9 5 5 5-5" />
+                    </svg>
+                </button>
+
+
+                <button type="button" class="filter-button">
+                    <span>Status</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m7 9 5 5 5-5" />
+                    </svg>
+                </button>
+
+
+                <button type="button" class="filter-button">
+                    <span>Priority</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m7 9 5 5 5-5" />
+                    </svg>
+                </button>
+
+
+                <button type="button" class="filter-button">
+                    <span>Due Date</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m7 9 5 5 5-5" />
+                    </svg>
+                </button>
+
+
+                <div class="assignment-view-toggle">
+
+                    <button
+                        type="button"
+                        class="view-toggle active"
+                        aria-label="List view">
+
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M5 7h14M5 12h14M5 17h14" />
+                            <circle cx="3.5" cy="7" r=".7" />
+                            <circle cx="3.5" cy="12" r=".7" />
+                            <circle cx="3.5" cy="17" r=".7" />
+                        </svg>
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="view-toggle"
+                        aria-label="Grid view">
+
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="4" y="4" width="6" height="6" rx="1" />
+                            <rect x="14" y="4" width="6" height="6" rx="1" />
+                            <rect x="4" y="14" width="6" height="6" rx="1" />
+                            <rect x="14" y="14" width="6" height="6" rx="1" />
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="assignment-table-wrapper">
+
+                <table class="assignment-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Assignment</th>
+                            <th>Course</th>
+                            <th>Due Date &amp; Time</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+
+                            <td colspan="6"
+                                class="assignment-empty-state">
+
+                                <div>
+                                    <strong>No assignments found</strong>
+                                    <span>
+                                        You currently have no assignments to display.
+                                    </span>
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model)
+                        {
+                            var statusClass = item.Status
+                                .Replace(" ", "")
+                                .ToLowerInvariant();
+
+                            var priorityClass = item.Priority
+                                .ToLowerInvariant();
+
+                            <tr class="assignment-table-row">
+
+                                <td class="assignment-name-cell">
+
+                                    <span class="assignment-row-line @item.Color"></span>
+
+                                    <div class="assignment-name-content">
+
+                                        <strong>
+                                            @item.Name
+                                        </strong>
+
+                                        <small>
+                                            Complete the required work
+                                        </small>
+
+                                    </div>
+
+                                </td>
+
+                                <td class="assignment-course-cell">
+
+                                    <strong>
+                                        @item.Course
+                                    </strong>
+
+                                    <small>
+                                        Course
+                                    </small>
+
+                                </td>
+
+
+              
+                                <td class="assignment-due-cell">
+
+                                    <div class="due-date">
+
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <rect x="3" y="5" width="18" height="16" rx="2" />
+                                            <path d="M7 3v4M17 3v4M3 10h18" />
+                                        </svg>
+
+                                        <span>
+                                            @item.Due
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+
+                                    <span class="assignment-priority @priorityClass">
+                                        @item.Priority
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <span class="assignment-status @statusClass">
+                                        @item.Status
+                                    </span>
+
+                                </td>
+
+                                <td class="assignment-actions-cell">
+
+                                    <button
+                                        type="button"
+                                        class="assignment-action-button"
+                                        aria-label="Assignment actions">
+
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="assignment-table-footer">
+
+                <span class="assignment-count">
+                    Showing
+                    <strong>
+                        @(Model.Count == 0 ? 0 : 1)
+                    </strong>
+                    –
+                    <strong>
+                        @Model.Count
+                    </strong>
+                    of
+                    <strong>
+                        @Model.Count
+                    </strong>
+                    assignments
+                </span>
+
+
+                <div class="assignment-pagination">
+
+                    <button
+                        type="button"
+                        class="pagination-button disabled"
+                        aria-label="Previous page">
+                        ‹
+                    </button>
+
+                    <button
+                        type="button"
+                        class="pagination-button active">
+                        1
+                    </button>
+
+                    <button
+                        type="button"
+                        class="pagination-button">
+                        2
+                    </button>
+
+                    <button
+                        type="button"
+                        class="pagination-button"
+                        aria-label="Next page">
+                        ›
+                    </button>
+
+                    <button
+                        type="button"
+                        class="pagination-size">
+
+                        <span>Show</span>
+                        <strong>10</strong>
+
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="m7 9 5 5 5-5" />
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        <aside class="assignment-sidebar">
+
+            <section class="assignment-overview-card">
+
+                <div class="sidebar-card-heading">
+
+                    <div class="sidebar-card-title">
+
+                        <span class="sidebar-card-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
+                                <path d="M14 3v5h5" />
+                                <path d="M8 13h8M8 17h6" />
+                            </svg>
+                        </span>
+
+                        <h2>Assignment Overview</h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-stat-grid">
+
+                    <div class="overview-stat">
+
+                        <span class="overview-stat-icon blue">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
+                                <path d="M14 3v5h5" />
+                            </svg>
+                        </span>
+
+                        <strong>@totalAssignments</strong>
+                        <small>Total</small>
+
+                    </div>
+
+
+                    <div class="overview-stat">
+
+                        <span class="overview-stat-icon green">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="5" width="18" height="16" rx="2" />
+                                <path d="M7 3v4M17 3v4M3 10h18" />
+                            </svg>
+                        </span>
+
+                        <strong>@upcomingAssignments</strong>
+                        <small>Upcoming</small>
+
+                    </div>
+
+
+                    <div class="overview-stat">
+
+                        <span class="overview-stat-icon red">
+                            !
+                        </span>
+
+                        <strong class="red-text">
+                            @overdueAssignments
+                        </strong>
+
+                        <small>Overdue</small>
+
+                    </div>
+
+
+                    <div class="overview-stat">
+
+                        <span class="overview-stat-icon teal">
+                            ✓
+                        </span>
+
+                        <strong class="teal-text">
+                            @completedAssignments
+                        </strong>
+
+                        <small>Completed</small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="deadlines-card">
+
+                <div class="sidebar-card-heading">
+
+                    <div class="sidebar-card-title">
+
+                        <span class="sidebar-card-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="5" width="18" height="16" rx="2" />
+                                <path d="M7 3v4M17 3v4M3 10h18" />
+                            </svg>
+                        </span>
+
+                        <h2>Upcoming Deadlines</h2>
+
+                    </div>
+
+                    <a asp-controller="Assignments"
+                       asp-action="Index">
+                        View All →
+                    </a>
+
+                </div>
+
+
+                <div class="deadline-list">
+
+                    @foreach (var item in Model.Take(5))
+                    {
+                        <div class="deadline-item">
+
+                            <span class="deadline-line @item.Color"></span>
+
+                            <div class="deadline-information">
+
+                                <strong>
+                                    @item.Name
+                                </strong>
+
+                                <small>
+                                    @item.Course
+                                </small>
+
+                            </div>
+
+                            <span class="deadline-time">
+
+                                @if (!string.IsNullOrWhiteSpace(item.Due))
+                                {
+                                    @item.Due
+                                }
+
+                            </span>
+
+                        </div>
+                    }
+
+                </div>
+
+            </section>
+
+            <aside class="assignment-motivation-card">
+
+                <div class="motivation-icon">
+
+                    <svg viewBox="0 0 64 64" aria-hidden="true">
+                        <path d="M10 18 32 9l22 9-22 9-22-9Z" />
+                        <path d="M16 23v14l16 7 16-7V23" />
+                        <path d="M10 31v14l22 10 22-10V31" />
+                    </svg>
+
+                </div>
+
+                <h2>
+                    Stay on top of your work
+                </h2>
+
+                <p>
+                    Small steps today,
+                    <br />
+                    big achievements tomorrow.
+                </p>
+
+                <span class="motivation-line"></span>
+
+            </aside>
+
+        </aside>
+
+    </section>
+
+</section>
