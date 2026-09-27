@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StudentHub.Data;
 using StudentHub.Services;
+using StudentHub.Services.Schedule;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAcademicTermService, AcademicTermService>();
+builder.Services.AddScoped<IScheduleService, SqlScheduleService>();
 
 builder.Services.AddLocalization(options =>
     options.ResourcesPath = "Resources");

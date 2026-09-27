@@ -72,10 +72,18 @@ public sealed class AcademicController(
 
         foreach (var schedule in model.Schedules)
         {
+            if (schedule.DaysOfWeek.Count == 0)
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    "Please select at least one class day for each schedule.");
+
+                break;
+            }
+
             if (schedule.StartTime.HasValue &&
                 schedule.EndTime.HasValue &&
-                schedule.EndTime.Value <=
-                schedule.StartTime.Value)
+                schedule.EndTime.Value <= schedule.StartTime.Value)
             {
                 ModelState.AddModelError(
                     string.Empty,

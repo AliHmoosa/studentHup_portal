@@ -5,19 +5,12 @@ namespace StudentHub.Models;
 public sealed class CourseListItem
 {
     public int Id { get; init; }
-
     public int TermId { get; init; }
-
     public string TermName { get; init; } = string.Empty;
-
     public string Code { get; init; } = string.Empty;
-
     public string Name { get; init; } = string.Empty;
-
     public decimal CreditHours { get; init; }
-
     public string Status { get; init; } = string.Empty;
-
     public int ProgressPercent { get; init; }
 }
 
@@ -74,9 +67,12 @@ public sealed class CreateCourseViewModel
     [Display(Name = "Instructor")]
     public string? Instructor { get; set; }
 
-    [StringLength(80)]
     [Display(Name = "Category")]
     public string? Category { get; set; }
+
+    [StringLength(80)]
+    [Display(Name = "Custom Category")]
+    public string? CustomCategory { get; set; }
 
     [Required]
     [Display(Name = "Academic Term")]
@@ -88,9 +84,8 @@ public sealed class CreateCourseViewModel
 
 public sealed class CourseScheduleInput
 {
-    [Range(0, 6)]
-    [Display(Name = "Day")]
-    public int DayOfWeek { get; set; }
+    [Display(Name = "Days")]
+    public List<int> DaysOfWeek { get; set; } = [];
 
     [Required]
     [Display(Name = "Start Time")]

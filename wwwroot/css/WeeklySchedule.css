@@ -1148,3 +1148,61 @@ html[dir="rtl"] .today-class-content,
 html[dir="rtl"] .course-summary-content {
     text-align: right;
 }
+
+/* ============================================================
+   EMPTY SCHEDULE
+   ============================================================ */
+
+.empty-schedule {
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 25px;
+    text-align: center;
+}
+
+.empty-schedule-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    border-radius: 16px;
+    background: #e5f7f0;
+    font-size: 30px;
+}
+
+.empty-schedule h2 {
+    margin: 0;
+    color: #101d72;
+    font-size: 20px;
+}
+
+.empty-schedule p {
+    max-width: 430px;
+    margin: 9px 0 22px;
+    color: #718096;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.empty-schedule-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 7px;
+    background: #075f5c;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.empty-schedule-button:hover {
+    background: #0b7d75;
+}

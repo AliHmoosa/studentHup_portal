@@ -43,18 +43,24 @@
         </div>
 
 
+        <!-- COURSE INFORMATION -->
+
         <section class="form-section">
 
             <div class="section-heading">
+
                 <h2>Course Information</h2>
 
                 <p>
                     Enter the information for your course.
                 </p>
+
             </div>
 
 
             <div class="form-grid">
+
+                <!-- COURSE NAME -->
 
                 <div class="form-group form-group-wide">
 
@@ -71,6 +77,8 @@
                 </div>
 
 
+                <!-- COURSE CODE -->
+
                 <div class="form-group">
 
                     <label asp-for="Code"></label>
@@ -85,6 +93,8 @@
 
                 </div>
 
+
+                <!-- CREDIT HOURS -->
 
                 <div class="form-group">
 
@@ -105,9 +115,14 @@
                 </div>
 
 
+                <!-- INSTRUCTOR -->
+
                 <div class="form-group">
 
-                    <label asp-for="Instructor"></label>
+                    <label asp-for="Instructor">
+                        Instructor
+                        <span class="optional-label">Optional</span>
+                    </label>
 
                     <input asp-for="Instructor"
                            class="form-input"
@@ -120,13 +135,124 @@
                 </div>
 
 
+                <!-- CATEGORY -->
+
                 <div class="form-group">
 
-                    <label asp-for="Category"></label>
+                    <label asp-for="Category">
+                        Category
+                        <span class="optional-label">Optional</span>
+                    </label>
 
-                    <input asp-for="Category"
-                           class="form-input"
-                           placeholder="e.g. Medical Sciences" />
+                    <div class="select-wrapper">
+
+                        <select asp-for="Category"
+                                class="form-input category-select"
+                                id="category-select">
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="Computer Science">
+                                Computer Science
+                            </option>
+
+                            <option value="Information Technology">
+                                Information Technology
+                            </option>
+
+                            <option value="Software Engineering">
+                                Software Engineering
+                            </option>
+
+                            <option value="Engineering">
+                                Engineering
+                            </option>
+
+                            <option value="Business Administration">
+                                Business Administration
+                            </option>
+
+                            <option value="Accounting">
+                                Accounting
+                            </option>
+
+                            <option value="Finance">
+                                Finance
+                            </option>
+
+                            <option value="Economics">
+                                Economics
+                            </option>
+
+                            <option value="Mathematics">
+                                Mathematics
+                            </option>
+
+                            <option value="Physics">
+                                Physics
+                            </option>
+
+                            <option value="Chemistry">
+                                Chemistry
+                            </option>
+
+                            <option value="Biology">
+                                Biology
+                            </option>
+
+                            <option value="Medicine & Health Sciences">
+                                Medicine & Health Sciences
+                            </option>
+
+                            <option value="Law">
+                                Law
+                            </option>
+
+                            <option value="Education">
+                                Education
+                            </option>
+
+                            <option value="Psychology">
+                                Psychology
+                            </option>
+
+                            <option value="Sociology">
+                                Sociology
+                            </option>
+
+                            <option value="Languages">
+                                Languages
+                            </option>
+
+                            <option value="Arts & Humanities">
+                                Arts & Humanities
+                            </option>
+
+                            <option value="Communication & Media">
+                                Communication & Media
+                            </option>
+
+                            <option value="Architecture">
+                                Architecture
+                            </option>
+
+                            <option value="Design">
+                                Design
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                        <span class="select-arrow">
+                            ▾
+                        </span>
+
+                    </div>
 
                     <span asp-validation-for="Category"
                           class="field-validation">
@@ -135,25 +261,60 @@
                 </div>
 
 
+                <!-- CUSTOM CATEGORY -->
+
+                <div class="form-group"
+                     id="custom-category-group"
+                     hidden>
+
+                    <label asp-for="CustomCategory">
+                        Custom Category
+                    </label>
+
+                    <input asp-for="CustomCategory"
+                           class="form-input"
+                           placeholder="e.g. Marine Sciences" />
+
+                    <span class="form-help">
+                        Enter your own category.
+                    </span>
+
+                    <span asp-validation-for="CustomCategory"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <!-- ACADEMIC TERM -->
+
                 <div class="form-group">
 
                     <label asp-for="TermId"></label>
 
-                    <select asp-for="TermId"
-                            class="form-input">
+                    <div class="select-wrapper">
 
-                        <option value="">
-                            Select academic term
-                        </option>
+                        <select asp-for="TermId"
+                                class="form-input">
 
-                        @foreach (var term in terms)
-                        {
-                            <option value="@term.Id">
-                                @term.Name
+                            <option value="">
+                                Select academic term
                             </option>
-                        }
 
-                    </select>
+                            @foreach (var term in terms)
+                            {
+                                <option value="@term.Id">
+                                    @term.Name
+                                </option>
+                            }
+
+                        </select>
+
+                        <span class="select-arrow">
+                            ▾
+                        </span>
+
+                    </div>
 
                     <span asp-validation-for="TermId"
                           class="field-validation">
@@ -162,15 +323,24 @@
                 </div>
 
 
+                <!-- DESCRIPTION -->
+
                 <div class="form-group form-group-wide">
 
-                    <label asp-for="Description"></label>
+                    <label asp-for="Description">
+                        Description
+                        <span class="optional-label">Optional</span>
+                    </label>
 
                     <textarea asp-for="Description"
                               class="form-input form-textarea"
                               rows="5"
-                              placeholder="Describe the course...">
-                    </textarea>
+                              placeholder="Describe the course..."></textarea>
+
+                    <span class="form-help">
+                        Add a short description if you want to keep additional
+                        information about this course.
+                    </span>
 
                     <span asp-validation-for="Description"
                           class="field-validation">
@@ -183,22 +353,30 @@
         </section>
 
 
+        <!-- CLASS SCHEDULE -->
+
         <section class="form-section">
 
             <div class="section-heading schedule-heading">
 
                 <div>
+
                     <h2>Class Schedule</h2>
 
                     <p>
-                        Add the days, times, and locations for this course.
+                        Select the days that share the same class time and location.
                     </p>
+
                 </div>
 
                 <button type="button"
                         id="add-schedule"
                         class="secondary-button">
-                    ＋ Add Class
+
+                    <span class="button-icon">＋</span>
+
+                    Add Class
+
                 </button>
 
             </div>
@@ -208,97 +386,214 @@
 
                 @for (var i = 0; i < Model.Schedules.Count; i++)
                 {
-                    <div class="schedule-row">
+                    <div class="schedule-card">
 
-                        <div class="form-group">
+                        <div class="schedule-card-header">
 
-                            <label>Day</label>
+                            <div>
 
-                            <select name="Schedules[@i].DayOfWeek"
-                                    class="form-input">
+                                <span class="schedule-number">
+                                    Class Schedule @(i + 1)
+                                </span>
 
-                                <option value="0"
-                                        selected="@(Model.Schedules[i].DayOfWeek == 0)">
-                                    Sunday
-                                </option>
+                                <p>
+                                    Select one or more days.
+                                </p>
 
-                                <option value="1"
-                                        selected="@(Model.Schedules[i].DayOfWeek == 1)">
-                                    Monday
-                                </option>
+                            </div>
 
-                                <option value="2"
-                                        selected="@(Model.Schedules[i].DayOfWeek == 2)">
-                                    Tuesday
-                                </option>
-
-                                <option value="3"
-                                        selected="@(Model.Schedules[i].DayOfWeek == 3)">
-                                    Wednesday
-                                </option>
-
-                                <option value="4"
-                                        selected="@(Model.Schedules[i].DayOfWeek == 4)">
-                                    Thursday
-                                </option>
-
-                                <option value="5"
-                                        selected="@(Model.Schedules[i].DayOfWeek == 5)">
-                                    Friday
-                                </option>
-
-                                <option value="6"
-                                        selected="@(Model.Schedules[i].DayOfWeek == 6)">
-                                    Saturday
-                                </option>
-
-                            </select>
+                            <button type="button"
+                                    class="remove-schedule"
+                                    aria-label="Remove class">
+                                ×
+                            </button>
 
                         </div>
 
 
-                        <div class="form-group">
+                        <!-- DAYS -->
 
-                            <label>Start Time</label>
+                        <div class="schedule-field">
 
-                            <input type="time"
-                                   name="Schedules[@i].StartTime"
-                                   value="@Model.Schedules[i].StartTime?.ToString(@"hh\:mm")"
-                                   class="form-input" />
+                            <label class="schedule-label">
+                                Class Days
+                            </label>
+
+                            <div class="day-selector">
+
+                                <label class="day-option">
+
+                                    <input type="checkbox"
+                                           name="Schedules[@i].DaysOfWeek"
+                                           value="0"
+                                           @(Model.Schedules[i].DaysOfWeek.Contains(0)
+                                               ? "checked"
+                                               : null) />
+
+                                    <span>Sun</span>
+
+                                </label>
+
+
+                                <label class="day-option">
+
+                                    <input type="checkbox"
+                                           name="Schedules[@i].DaysOfWeek"
+                                           value="1"
+                                           @(Model.Schedules[i].DaysOfWeek.Contains(1)
+                                               ? "checked"
+                                               : null) />
+
+                                    <span>Mon</span>
+
+                                </label>
+
+
+                                <label class="day-option">
+
+                                    <input type="checkbox"
+                                           name="Schedules[@i].DaysOfWeek"
+                                           value="2"
+                                           @(Model.Schedules[i].DaysOfWeek.Contains(2)
+                                               ? "checked"
+                                               : null) />
+
+                                    <span>Tue</span>
+
+                                </label>
+
+
+                                <label class="day-option">
+
+                                    <input type="checkbox"
+                                           name="Schedules[@i].DaysOfWeek"
+                                           value="3"
+                                           @(Model.Schedules[i].DaysOfWeek.Contains(3)
+                                               ? "checked"
+                                               : null) />
+
+                                    <span>Wed</span>
+
+                                </label>
+
+
+                                <label class="day-option">
+
+                                    <input type="checkbox"
+                                           name="Schedules[@i].DaysOfWeek"
+                                           value="4"
+                                           @(Model.Schedules[i].DaysOfWeek.Contains(4)
+                                               ? "checked"
+                                               : null) />
+
+                                    <span>Thu</span>
+
+                                </label>
+
+
+                                <label class="day-option">
+
+                                    <input type="checkbox"
+                                           name="Schedules[@i].DaysOfWeek"
+                                           value="5"
+                                           @(Model.Schedules[i].DaysOfWeek.Contains(5)
+                                               ? "checked"
+                                               : null) />
+
+                                    <span>Fri</span>
+
+                                </label>
+
+
+                                <label class="day-option">
+
+                                    <input type="checkbox"
+                                           name="Schedules[@i].DaysOfWeek"
+                                           value="6"
+                                           @(Model.Schedules[i].DaysOfWeek.Contains(6)
+                                               ? "checked"
+                                               : null) />
+
+                                    <span>Sat</span>
+
+                                </label>
+
+                            </div>
 
                         </div>
 
 
-                        <div class="form-group">
+                        <!-- TIME + LOCATION -->
 
-                            <label>End Time</label>
+                        <div class="schedule-details">
 
-                            <input type="time"
-                                   name="Schedules[@i].EndTime"
-                                   value="@Model.Schedules[i].EndTime?.ToString(@"hh\:mm")"
-                                   class="form-input" />
+                            <div class="schedule-field">
+
+                                <label class="schedule-label">
+                                    Start Time
+                                </label>
+
+                                <div class="time-input-wrapper">
+
+                                    <span class="time-icon">
+                                        ◷
+                                    </span>
+
+                                    <input type="time"
+                                           name="Schedules[@i].StartTime"
+                                           value="@Model.Schedules[i].StartTime?.ToString(@"hh\:mm")"
+                                           class="time-input" />
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="time-separator">
+                                →
+                            </div>
+
+
+                            <div class="schedule-field">
+
+                                <label class="schedule-label">
+                                    End Time
+                                </label>
+
+                                <div class="time-input-wrapper">
+
+                                    <span class="time-icon">
+                                        ◷
+                                    </span>
+
+                                    <input type="time"
+                                           name="Schedules[@i].EndTime"
+                                           value="@Model.Schedules[i].EndTime?.ToString(@"hh\:mm")"
+                                           class="time-input" />
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="schedule-field location-field">
+
+                                <label class="schedule-label">
+                                    Location
+                                    <span class="optional-label">
+                                        Optional
+                                    </span>
+                                </label>
+
+                                <input type="text"
+                                       name="Schedules[@i].Location"
+                                       value="@Model.Schedules[i].Location"
+                                       class="form-input"
+                                       placeholder="e.g. Room 201" />
+
+                            </div>
 
                         </div>
-
-
-                        <div class="form-group location-group">
-
-                            <label>Location</label>
-
-                            <input type="text"
-                                   name="Schedules[@i].Location"
-                                   value="@Model.Schedules[i].Location"
-                                   class="form-input"
-                                   placeholder="e.g. Room 201" />
-
-                        </div>
-
-
-                        <button type="button"
-                                class="remove-schedule"
-                                aria-label="Remove class">
-                            ×
-                        </button>
 
                     </div>
                 }
@@ -307,6 +602,8 @@
 
         </section>
 
+
+        <!-- ACTIONS -->
 
         <div class="form-actions">
 
@@ -341,107 +638,300 @@
             const addButton =
                 document.getElementById("add-schedule");
 
+            const categorySelect =
+                document.getElementById("category-select");
+
+            const customCategoryGroup =
+                document.getElementById("custom-category-group");
+
+
+            /*
+             * CATEGORY
+             */
+
+            function updateCustomCategory() {
+
+                if (!categorySelect || !customCategoryGroup) {
+                    return;
+                }
+
+                const isOther =
+                    categorySelect.value === "Other";
+
+                customCategoryGroup.hidden =
+                    !isOther;
+
+                if (!isOther) {
+
+                    const input =
+                        customCategoryGroup.querySelector("input");
+
+                    if (input) {
+                        input.value = "";
+                    }
+
+                }
+
+            }
+
+
+            if (categorySelect) {
+
+                categorySelect.addEventListener(
+                    "change",
+                    updateCustomCategory);
+
+                updateCustomCategory();
+
+            }
+
+
+            /*
+             * SCHEDULE INDEXES
+             */
 
             function updateIndexes() {
 
-                const rows =
-                    container.querySelectorAll(".schedule-row");
+                const cards =
+                    container.querySelectorAll(".schedule-card");
 
-                rows.forEach((row, index) => {
+                cards.forEach((card, index) => {
 
-                    row.querySelectorAll("[name]").forEach(input => {
+                    card.querySelectorAll("[name]").forEach(input => {
 
                         input.name =
                             input.name.replace(
-                                /Schedules\[\d+\]/,
+                                /Schedules\[\d+\]/g,
                                 `Schedules[${index}]`
                             );
 
                     });
+
+                    const number =
+                        card.querySelector(".schedule-number");
+
+                    if (number) {
+
+                        number.textContent =
+                            `Class Schedule ${index + 1}`;
+
+                    }
 
                 });
 
             }
 
 
-            function createScheduleRow() {
+            /*
+             * CREATE SCHEDULE
+             */
+
+            function createScheduleCard() {
 
                 const index =
-                    container.querySelectorAll(".schedule-row").length;
+                    container.querySelectorAll(".schedule-card").length;
 
-                const row =
+                const card =
                     document.createElement("div");
 
-                row.className =
-                    "schedule-row";
+                card.className =
+                    "schedule-card";
 
-                row.innerHTML = `
-                    <div class="form-group">
+                card.innerHTML = `
 
-                        <label>Day</label>
+                    <div class="schedule-card-header">
 
-                        <select name="Schedules[${index}].DayOfWeek"
-                                class="form-input">
+                        <div>
 
-                            <option value="0">Sunday</option>
-                            <option value="1">Monday</option>
-                            <option value="2">Tuesday</option>
-                            <option value="3">Wednesday</option>
-                            <option value="4">Thursday</option>
-                            <option value="5">Friday</option>
-                            <option value="6">Saturday</option>
+                            <span class="schedule-number">
+                                Class Schedule ${index + 1}
+                            </span>
 
-                        </select>
+                            <p>
+                                Select one or more days.
+                            </p>
 
-                    </div>
+                        </div>
 
-                    <div class="form-group">
-
-                        <label>Start Time</label>
-
-                        <input type="time"
-                               name="Schedules[${index}].StartTime"
-                               class="form-input" />
+                        <button type="button"
+                                class="remove-schedule"
+                                aria-label="Remove class">
+                            ×
+                        </button>
 
                     </div>
 
-                    <div class="form-group">
 
-                        <label>End Time</label>
+                    <div class="schedule-field">
 
-                        <input type="time"
-                               name="Schedules[${index}].EndTime"
-                               class="form-input" />
+                        <label class="schedule-label">
+                            Class Days
+                        </label>
+
+                        <div class="day-selector">
+
+                            <label class="day-option">
+
+                                <input type="checkbox"
+                                       name="Schedules[${index}].DaysOfWeek"
+                                       value="0" />
+
+                                <span>Sun</span>
+
+                            </label>
+
+
+                            <label class="day-option">
+
+                                <input type="checkbox"
+                                       name="Schedules[${index}].DaysOfWeek"
+                                       value="1" />
+
+                                <span>Mon</span>
+
+                            </label>
+
+
+                            <label class="day-option">
+
+                                <input type="checkbox"
+                                       name="Schedules[${index}].DaysOfWeek"
+                                       value="2" />
+
+                                <span>Tue</span>
+
+                            </label>
+
+
+                            <label class="day-option">
+
+                                <input type="checkbox"
+                                       name="Schedules[${index}].DaysOfWeek"
+                                       value="3" />
+
+                                <span>Wed</span>
+
+                            </label>
+
+
+                            <label class="day-option">
+
+                                <input type="checkbox"
+                                       name="Schedules[${index}].DaysOfWeek"
+                                       value="4" />
+
+                                <span>Thu</span>
+
+                            </label>
+
+
+                            <label class="day-option">
+
+                                <input type="checkbox"
+                                       name="Schedules[${index}].DaysOfWeek"
+                                       value="5" />
+
+                                <span>Fri</span>
+
+                            </label>
+
+
+                            <label class="day-option">
+
+                                <input type="checkbox"
+                                       name="Schedules[${index}].DaysOfWeek"
+                                       value="6" />
+
+                                <span>Sat</span>
+
+                            </label>
+
+                        </div>
 
                     </div>
 
-                    <div class="form-group location-group">
 
-                        <label>Location</label>
+                    <div class="schedule-details">
 
-                        <input type="text"
-                               name="Schedules[${index}].Location"
-                               class="form-input"
-                               placeholder="e.g. Room 201" />
+                        <div class="schedule-field">
+
+                            <label class="schedule-label">
+                                Start Time
+                            </label>
+
+                            <div class="time-input-wrapper">
+
+                                <span class="time-icon">
+                                    ◷
+                                </span>
+
+                                <input type="time"
+                                       name="Schedules[${index}].StartTime"
+                                       class="time-input" />
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="time-separator">
+                            →
+                        </div>
+
+
+                        <div class="schedule-field">
+
+                            <label class="schedule-label">
+                                End Time
+                            </label>
+
+                            <div class="time-input-wrapper">
+
+                                <span class="time-icon">
+                                    ◷
+                                </span>
+
+                                <input type="time"
+                                       name="Schedules[${index}].EndTime"
+                                       class="time-input" />
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="schedule-field location-field">
+
+                            <label class="schedule-label">
+                                Location
+                                <span class="optional-label">
+                                    Optional
+                                </span>
+                            </label>
+
+                            <input type="text"
+                                   name="Schedules[${index}].Location"
+                                   class="form-input"
+                                   placeholder="e.g. Room 201" />
+
+                        </div>
 
                     </div>
-
-                    <button type="button"
-                            class="remove-schedule"
-                            aria-label="Remove class">
-                        ×
-                    </button>
                 `;
 
-                container.appendChild(row);
+                container.appendChild(card);
 
             }
 
 
             addButton.addEventListener(
                 "click",
-                createScheduleRow);
+                createScheduleCard);
 
+
+            /*
+             * REMOVE SCHEDULE
+             */
 
             container.addEventListener(
                 "click",
@@ -454,14 +944,14 @@
                         return;
                     }
 
-                    const rows =
-                        container.querySelectorAll(".schedule-row");
+                    const cards =
+                        container.querySelectorAll(".schedule-card");
 
-                    if (rows.length === 1) {
+                    if (cards.length === 1) {
                         return;
                     }
 
-                    button.closest(".schedule-row").remove();
+                    button.closest(".schedule-card").remove();
 
                     updateIndexes();
 

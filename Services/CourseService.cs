@@ -286,78 +286,73 @@ public sealed class CourseService(
 
             foreach (var schedule in model.Schedules)
             {
-                if (!schedule.StartTime.HasValue ||
-                    !schedule.EndTime.HasValue)
+                if (schedule.StartTime is null ||
+                    schedule.EndTime is null ||
+                    schedule.DaysOfWeek.Count == 0)
                 {
                     continue;
                 }
 
-                if (schedule.EndTime.Value <=
-                    schedule.StartTime.Value)
+                foreach (var dayOfWeek in schedule.DaysOfWeek.Distinct())
                 {
-                    throw new InvalidOperationException(
-                        "Course schedule end time must be after the start time.");
+                    await using var scheduleCommand =
+                        connection.CreateCommand();
+
+                    scheduleCommand.Transaction = transaction;
+
+                    scheduleCommand.CommandText = """
+                        INSERT INTO CourseSchedules
+                        (
+                            OwnerId,
+                            CourseId,
+                            DayOfWeek,
+                            StartTime,
+                            EndTime,
+                            Location
+                        )
+                        VALUES
+                        (
+                            @OwnerId,
+                            @CourseId,
+                            @DayOfWeek,
+                            @StartTime,
+                            @EndTime,
+                            @Location
+                        );
+                        """;
+
+                    AddParameter(
+                        scheduleCommand,
+                        "@OwnerId",
+                        ownerId);
+
+                    AddParameter(
+                        scheduleCommand,
+                        "@CourseId",
+                        courseId);
+
+                    AddParameter(
+                        scheduleCommand,
+                        "@DayOfWeek",
+                        dayOfWeek);
+
+                    AddParameter(
+                        scheduleCommand,
+                        "@StartTime",
+                        schedule.StartTime.Value);
+
+                    AddParameter(
+                        scheduleCommand,
+                        "@EndTime",
+                        schedule.EndTime.Value);
+
+                    AddParameter(
+                        scheduleCommand,
+                        "@Location",
+                        schedule.Location?.Trim());
+
+                    await scheduleCommand.ExecuteNonQueryAsync();
                 }
-
-                await using var scheduleCommand =
-                    connection.CreateCommand();
-
-                scheduleCommand.Transaction = transaction;
-
-                scheduleCommand.CommandText = """
-                    INSERT INTO CourseSchedules
-                    (
-                        OwnerId,
-                        CourseId,
-                        DayOfWeek,
-                        StartTime,
-                        EndTime,
-                        Location
-                    )
-                    VALUES
-                    (
-                        @OwnerId,
-                        @CourseId,
-                        @DayOfWeek,
-                        @StartTime,
-                        @EndTime,
-                        @Location
-                    );
-                    """;
-
-                AddParameter(
-                    scheduleCommand,
-                    "@OwnerId",
-                    ownerId);
-
-                AddParameter(
-                    scheduleCommand,
-                    "@CourseId",
-                    courseId);
-
-                AddParameter(
-                    scheduleCommand,
-                    "@DayOfWeek",
-                    schedule.DayOfWeek);
-
-                AddParameter(
-                    scheduleCommand,
-                    "@StartTime",
-                    schedule.StartTime.Value);
-
-                AddParameter(
-                    scheduleCommand,
-                    "@EndTime",
-                    schedule.EndTime.Value);
-
-                AddParameter(
-                    scheduleCommand,
-                    "@Location",
-                    string.IsNullOrWhiteSpace(schedule.Location)
-                        ? null
-                        : schedule.Location.Trim());
-
-                await scheduleCommand.ExecuteNonQueryAsync();
             }
 
             await transaction.CommitAsync();
