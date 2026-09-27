@@ -1,0 +1,143 @@
+.terms-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 32px 28px 60px;
+}
+
+.terms-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 14px;
+    color: #078875;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.terms-header h1 {
+    margin: 0;
+    color: #173b3a;
+    font-size: 32px;
+}
+
+.terms-header p {
+    margin: 8px 0 0;
+    color: #71838a;
+}
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 12px 22px;
+    border: 0;
+    border-radius: 9px;
+    background: #078875;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.primary-button:hover {
+    background: #067764;
+}
+
+.terms-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.term-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e2ece9;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(20, 60, 55, 0.04);
+}
+
+.term-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #edf8f5;
+    font-size: 24px;
+}
+
+.term-content h2 {
+    margin: 0;
+    color: #173b3a;
+    font-size: 19px;
+}
+
+.term-dates {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 9px;
+    color: #71838a;
+    font-size: 14px;
+}
+
+.date-arrow {
+    color: #078875;
+    font-weight: 700;
+}
+
+.empty-terms {
+    padding: 70px 30px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e2ece9;
+    border-radius: 16px;
+}
+
+.empty-icon {
+    font-size: 44px;
+    margin-bottom: 14px;
+}
+
+.empty-terms h2 {
+    margin: 0;
+    color: #173b3a;
+}
+
+.empty-terms p {
+    margin: 10px 0 24px;
+    color: #71838a;
+}
+
+@media (max-width: 750px) {
+
+    .terms-page {
+        padding: 24px 16px 40px;
+    }
+
+    .terms-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .terms-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .primary-button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

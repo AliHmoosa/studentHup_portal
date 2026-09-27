@@ -1,0 +1,264 @@
+@model StudentHub.Models.CoursesPageViewModel
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<link rel="stylesheet"
+      href="~/css/Courses.css"
+      asp-append-version="true" />
+
+<section class="courses-page">
+
+    <div class="courses-header">
+
+        <div>
+            <h1>Courses</h1>
+            <p>
+                Explore your courses, view details, and track your progress.
+            </p>
+        </div>
+
+        <a asp-action="Create"
+        class="primary-button">
+            <span>＋</span>
+            Add Course
+        </a>
+
+
+        <a asp-action="Terms"
+        class="secondary-button">
+            Academic Terms
+        </a>
+
+        <a asp-action="Create"
+        class="primary-button">
+            ＋ Add Course
+        </a>
+
+    </div>
+
+
+    <section class="course-stats">
+
+        <article class="stat-card">
+            <div class="stat-icon blue">▣</div>
+            <div>
+                <strong>@Model.TotalCourses</strong>
+                <span>Total Courses</span>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon purple">◆</div>
+            <div>
+                <strong>@Model.InProgressCount</strong>
+                <span>In Progress</span>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon green">✓</div>
+            <div>
+                <strong>@Model.CompletedCount</strong>
+                <span>Completed</span>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon amber">◷</div>
+            <div>
+                <strong>@Model.UpcomingCount</strong>
+                <span>Upcoming</span>
+            </div>
+        </article>
+
+    </section>
+
+
+    <div class="course-toolbar">
+
+        <nav class="course-tabs">
+
+            <a class="@(string.IsNullOrWhiteSpace(Model.StatusFilter) ? "active" : "")"
+               asp-action="Courses">
+                All Courses
+            </a>
+
+            <a class="@(Model.StatusFilter == "In Progress" ? "active" : "")"
+               asp-action="Courses"
+               asp-route-status="In Progress">
+                In Progress
+            </a>
+
+            <a class="@(Model.StatusFilter == "Completed" ? "active" : "")"
+               asp-action="Courses"
+               asp-route-status="Completed">
+                Completed
+            </a>
+
+            <a class="@(Model.StatusFilter == "Upcoming" ? "active" : "")"
+               asp-action="Courses"
+               asp-route-status="Upcoming">
+                Upcoming
+            </a>
+
+        </nav>
+
+
+        <form method="get"
+              asp-action="Courses"
+              class="course-filters">
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input type="search"
+                       name="search"
+                       value="@Model.Search"
+                       placeholder="Search courses..." />
+
+            </div>
+
+            <select name="termId">
+
+                <option value="">
+                    All Terms
+                </option>
+
+                @foreach (var term in Model.Terms)
+                {
+                    <option value="@term.Id"
+                            selected="@(Model.TermFilter == term.Id.ToString())">
+                        @term.Name
+                    </option>
+                }
+
+            </select>
+
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Upcoming">Upcoming</option>
+            </select>
+
+            <button type="submit"
+                    class="filter-button">
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    @if (Model.Courses.Count == 0)
+    {
+        <section class="empty-courses">
+
+            <div class="empty-icon">
+                📚
+            </div>
+
+            <h2>No courses found</h2>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Search))
+            {
+                <p>
+                    No courses matched "@Model.Search".
+                </p>
+            }
+            else
+            {
+                <p>
+                    You don't have any courses in your StudentHub account yet.
+                </p>
+            }
+
+            <a asp-action="Create"
+                class="primary-button">
+                    ＋ Add Course
+            </a>
+
+        </section>
+    }
+    else
+    {
+        <section class="course-grid">
+
+            @foreach (var course in Model.Courses)
+            {
+                <article class="course-card">
+
+                    <div class="course-image">
+
+                        <div class="course-image-placeholder">
+                            <span>📚</span>
+                        </div>
+
+                        <span class="course-status">
+                            @course.Status
+                        </span>
+
+                    </div>
+
+
+                    <div class="course-content">
+
+                        <span class="course-code">
+                            @course.Code
+                        </span>
+
+                        <h2>
+                            @course.Name
+                        </h2>
+
+                        <div class="course-term">
+                            @course.TermName
+                        </div>
+
+
+                        <div class="course-meta">
+
+                            <span>
+                                ◇ @course.CreditHours Credits
+                            </span>
+
+                            <span>
+                                ● @course.Status
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress-row">
+
+                            <div class="progress-track">
+                                <span style="width:@course.ProgressPercent%"></span>
+                            </div>
+
+                            <strong>
+                                @course.ProgressPercent%
+                            </strong>
+
+                        </div>
+
+
+                        <a class="course-button"
+                           asp-action="Courses"
+                           asp-route-courseId="@course.Id">
+                            View Course Details
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </article>
+            }
+
+        </section>
+    }
+
+</section>

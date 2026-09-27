@@ -1,4 +1,553 @@
-@{ ViewData["Title"] = "Weekly Schedule"; var courses = new[]{("MED 410","Internal Medicine","Sunday, Tuesday","08:00 AM","10:30 AM","green"),("PHE 301","Community Health","Monday, Wednesday","11:00 AM","12:30 PM","blue"),("RES 220","Medical Research","Sunday, Thursday","01:00 PM","02:30 PM","amber"),("CLN 410","Clinical Skills","Tuesday, Thursday","03:00 PM","04:30 PM","purple")}; }
-<section class="page-hero schedule-hero"><div><h1>Weekly Schedule</h1><p>Your class timetable for the selected semester. All class information is synced with My Courses.</p></div><span>Same classes.<br />A big week.</span></section>
-<div class="schedule-toolbar"><button class="semester-button">▧ Semester 1 ⌄</button><button>‹</button><button>›</button><button>Today</button><span></span><button class="active-view">Week View</button><button>List View</button></div>
-<div class="schedule-layout"><article class="schedule-grid"><div class="week-header"><b>Time</b><b>Sunday</b><b>Monday</b><b>Tuesday</b><b>Wednesday</b><b>Thursday</b></div>@for(var h=8;h<=18;h++){<div class="week-row"><time>@h:00</time>@for(var day=0;day<5;day++){<div class="slot">@if((h==8 && (day==0 || day==2)) || (h==11 && (day==1||day==3)) || (h==13 && (day==0||day==4)) || (h==15 && (day==2||day==4))){var course = h==8 ? courses[0] : h==11 ? courses[1] : h==13 ? courses[2] : courses[3];<div class="class-block @course.Item6"><strong>@course.Item1</strong><span>@course.Item2</span><small>@course.Item4 - @course.Item5</small></div>}</div>}</div>}</article><aside class="schedule-side"><h2>Today</h2><p>Monday, Sep 15, 2026</p>@foreach(var course in courses){<div class="course-item"><i class="dot @course.Item6"></i><div><strong>@course.Item1</strong><small>@course.Item2</small><small>@course.Item3 · @course.Item4</small></div></div>}<h2>Schedule Conflicts</h2><div class="success-box">✓ No conflicts<br /><small>Your schedule looks good!</small></div></aside></div>
+@model StudentHub.Models.Schedule.WeeklyScheduleViewModel
+
+@{
+    ViewData["Title"] = "Weekly Schedule";
+
+    var days = new[]
+    {
+        DayOfWeek.Sunday,
+        DayOfWeek.Monday,
+        DayOfWeek.Tuesday,
+        DayOfWeek.Wednesday,
+        DayOfWeek.Thursday,
+        DayOfWeek.Friday,
+        DayOfWeek.Saturday
+    };
+
+    var hours = Enumerable.Range(8, 13).ToArray();
+
+    var todayDay =
+        (int)Model.Today.DayOfWeek;
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/WeeklySchedule.css"
+          asp-append-version="true" />
+}
+
+<section class="weekly-schedule-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+    <section class="weekly-hero">
+
+        <div class="weekly-hero-content">
+
+            <h1>Weekly Schedule</h1>
+
+            <p>
+                Your class timetable for the selected semester.
+                All class information is synced with My Courses.
+            </p>
+
+        </div>
+
+        <div class="weekly-hero-message">
+            Same classes.
+            <br />
+            A brighter week.
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TOOLBAR
+         ===================================================== -->
+    <section class="weekly-toolbar">
+
+        <button type="button"
+                class="semester-selector">
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="16" rx="2" />
+                <path d="M7 3v4M17 3v4M3 10h18" />
+            </svg>
+
+            <span>@Model.SemesterName</span>
+
+            <svg class="toolbar-chevron"
+                 viewBox="0 0 24 24"
+                 aria-hidden="true">
+                <path d="m7 9 5 5 5-5" />
+            </svg>
+
+        </button>
+
+
+        <div class="week-navigation">
+
+            <a class="week-nav-button"
+               asp-controller="Schedule"
+               asp-action="Weekly"
+               asp-route-date="@Model.WeekStartDate.AddDays(-7).ToString("yyyy-MM-dd")"
+               aria-label="Previous week">
+
+                ‹
+
+            </a>
+
+            <a class="week-nav-button"
+               asp-controller="Schedule"
+               asp-action="Weekly"
+               asp-route-date="@Model.WeekStartDate.AddDays(7).ToString("yyyy-MM-dd")"
+               aria-label="Next week">
+
+                ›
+
+            </a>
+
+        </div>
+
+
+        <a class="today-button"
+           asp-controller="Schedule"
+           asp-action="Weekly"
+           asp-route-date="@DateTime.Today.ToString("yyyy-MM-dd")">
+
+            Today
+
+        </a>
+
+
+        <div class="toolbar-spacer"></div>
+
+
+        <div class="schedule-view-switcher">
+
+            <button type="button"
+                    class="schedule-view-button active">
+
+                Week View
+
+            </button>
+
+            <a class="schedule-view-button"
+               asp-controller="Schedule"
+               asp-action="Weekly"
+               asp-route-date="@Model.WeekStartDate.ToString("yyyy-MM-dd")">
+
+                List View
+
+            </a>
+
+        </div>
+
+
+        <button type="button"
+                class="export-schedule-button">
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v12" />
+                <path d="m7 10 5 5 5-5" />
+                <path d="M4 21h16" />
+            </svg>
+
+            Export Schedule
+
+        </button>
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+    <section class="weekly-content">
+
+
+        <!-- =================================================
+             CALENDAR GRID
+             ================================================= -->
+        <article class="weekly-calendar-card">
+
+            <div class="calendar-grid">
+
+                <!-- Header -->
+                <div class="calendar-header calendar-time-header">
+                    Time
+                </div>
+
+                @foreach (var day in days)
+                {
+                    <div class="calendar-header
+                                @(todayDay == (int)day ? "current-day" : "")">
+
+                        <span>
+                            @day
+                        </span>
+
+                        @if (todayDay == (int)day)
+                        {
+                            <small>Today</small>
+                        }
+
+                    </div>
+                }
+
+
+                <!-- Time rows -->
+                @foreach (var hour in hours)
+                {
+                    <div class="calendar-time-cell">
+
+                        @{
+                            var hourDate =
+                                DateTime.Today.AddHours(hour);
+                        }
+
+                        @hourDate.ToString("h:00 tt")
+
+                    </div>
+
+
+                    @foreach (var day in days)
+                    {
+                        var cellEntries =
+                            Model.Entries
+                                .Where(x =>
+                                    x.DayOfWeek == (int)day &&
+                                    x.StartTime.Hours == hour)
+                                .OrderBy(x => x.StartTime)
+                                .ToList();
+
+                        <div class="calendar-slot">
+
+                            @foreach (var entry in cellEntries)
+                            {
+                                var duration =
+                                    Math.Max(
+                                        1,
+                                        (int)Math.Ceiling(
+                                            entry.DurationHours));
+
+                                <div class="schedule-class @entry.Color"
+                                     style="--class-hours:@duration;">
+
+                                    <strong>
+                                        @entry.CourseCode
+                                    </strong>
+
+                                    <span>
+                                        @entry.CourseName
+                                    </span>
+
+                                    <small>
+                                        @entry.TimeDisplay
+                                    </small>
+
+                                    @if (!string.IsNullOrWhiteSpace(entry.Room))
+                                    {
+                                        <small>
+                                            @entry.Room
+                                        </small>
+                                    }
+
+                                </div>
+                            }
+
+                        </div>
+                    }
+                }
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             RIGHT SIDEBAR
+             ================================================= -->
+        <aside class="weekly-sidebar">
+
+
+            <!-- Today -->
+            <section class="weekly-side-card today-card">
+
+                <div class="side-card-heading">
+
+                    <div>
+                        <h2>Today</h2>
+
+                        <p>
+                            @Model.Today.ToString("ddd, MMM d, yyyy")
+                        </p>
+                    </div>
+
+                    <span class="today-class-count">
+                        @Model.TodayEntries.Count
+                        @(Model.TodayEntries.Count == 1 ? "class" : "classes")
+                    </span>
+
+                </div>
+
+
+                <div class="today-class-list">
+
+                    @if (Model.TodayEntries.Count == 0)
+                    {
+                        <div class="no-today-classes">
+                            No classes today.
+                        </div>
+                    }
+                    else
+                    {
+                        foreach (var entry in Model.TodayEntries)
+                        {
+                            <div class="today-class-item">
+
+                                <span class="course-color @entry.Color"></span>
+
+                                <div class="today-class-content">
+
+                                    <strong>
+                                        @entry.CourseCode
+                                    </strong>
+
+                                    <span>
+                                        @entry.CourseName
+                                    </span>
+
+                                    <small>
+                                        @entry.TimeDisplay
+
+                                        @if (!string.IsNullOrWhiteSpace(entry.Room))
+                                        {
+                                            <span>
+                                                · @entry.Room
+                                            </span>
+                                        }
+                                    </small>
+
+                                </div>
+
+                                <span class="today-arrow">
+                                    ›
+                                </span>
+
+                            </div>
+                        }
+                    }
+
+                </div>
+
+
+                <a class="calendar-link"
+                   asp-controller="Schedule"
+                   asp-action="Calendar">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="5" width="18" height="16" rx="2" />
+                        <path d="M7 3v4M17 3v4M3 10h18" />
+                    </svg>
+
+                    View Today in Calendar
+
+                </a>
+
+            </section>
+
+
+            <!-- My Courses -->
+            <section class="weekly-side-card courses-card">
+
+                <div class="side-card-heading">
+
+                    <div>
+                        <h2>My Courses (@Model.SemesterName)</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="course-summary-list">
+
+                    @foreach (var course in Model.Courses)
+                    {
+                        <div class="course-summary-item">
+
+                            <span class="course-color @course.Color"></span>
+
+                            <div class="course-summary-content">
+
+                                <strong>
+                                    @course.CourseCode
+                                </strong>
+
+                                <span>
+                                    @course.CourseName
+                                </span>
+
+                                <small>
+                                    @course.DaysDisplay
+                                    ·
+                                    @course.TimeDisplay
+
+                                    @if (!string.IsNullOrWhiteSpace(course.Room))
+                                    {
+                                        <span>
+                                            · @course.Room
+                                        </span>
+                                    }
+                                </small>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </section>
+
+
+            <!-- Conflicts -->
+            <section class="weekly-side-card conflict-card">
+
+                <div class="side-card-heading">
+
+                    <h2>Schedule Conflicts</h2>
+
+                </div>
+
+                @if (Model.HasConflicts)
+                {
+                    <div class="conflict-warning">
+
+                        <div class="conflict-icon">
+                            !
+                        </div>
+
+                        <div>
+                            <strong>
+                                Conflicts detected
+                            </strong>
+
+                            @foreach (var conflict in Model.Conflicts)
+                            {
+                                <small>
+                                    @conflict
+                                </small>
+                            }
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="conflict-success">
+
+                        <div class="conflict-success-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <strong>
+                                No conflicts
+                            </strong>
+
+                            <small>
+                                Your class schedule looks good!
+                            </small>
+                        </div>
+
+                    </div>
+                }
+
+            </section>
+
+        </aside>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+         ===================================================== -->
+    <section class="weekly-summary-grid">
+
+
+        <article class="weekly-summary-card">
+
+            <div class="summary-icon green">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" />
+                    <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22V5.5Z" />
+                </svg>
+
+            </div>
+
+            <div>
+                <span>Total Courses</span>
+
+                <strong>
+                    @Model.TotalCourses
+                </strong>
+
+                <small>
+                    For @Model.SemesterName
+                </small>
+            </div>
+
+        </article>
+
+
+        <article class="weekly-summary-card">
+
+            <div class="summary-icon purple">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="8.5" />
+                    <path d="M12 7v5l3.5 2" />
+                </svg>
+
+            </div>
+
+            <div>
+                <span>Weekly Class Hours</span>
+
+                <strong>
+                    @Model.WeeklyHours.ToString("0.#")
+                </strong>
+
+                <small>
+                    Hours of scheduled classes
+                </small>
+            </div>
+
+        </article>
+
+
+        <article class="weekly-summary-card semester-summary">
+
+            <div class="summary-icon blue">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="16" rx="2" />
+                    <path d="M7 3v4M17 3v4M3 10h18" />
+                </svg>
+
+            </div>
+
+            <div>
+                <span>Semester Period</span>
+
+                <strong>
+                    @Model.SemesterStartDate.ToString("MMM d, yyyy")
+                    –
+                    @Model.SemesterEndDate.ToString("MMM d, yyyy")
+                </strong>
+
+                <small>
+                    @Model.SemesterName
+                </small>
+            </div>
+
+        </article>
+
+    </section>
+
+</section>

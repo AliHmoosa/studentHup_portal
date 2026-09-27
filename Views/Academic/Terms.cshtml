@@ -1,0 +1,117 @@
+@model StudentHub.Models.AcademicTermsPageViewModel
+
+@{
+    ViewData["Title"] = "Academic Terms";
+}
+
+<link rel="stylesheet"
+      href="~/css/AcademicTerms.css"
+      asp-append-version="true" />
+
+<section class="terms-page">
+
+    <div class="terms-header">
+
+        <div>
+            <a asp-action="Courses"
+               class="back-link">
+                ← Back to Courses
+            </a>
+
+            <h1>Academic Terms</h1>
+
+            <p>
+                Manage the academic terms you use for your courses.
+            </p>
+        </div>
+
+        <a asp-action="CreateTerm"
+           class="primary-button">
+            ＋ Add Term
+        </a>
+
+    </div>
+
+
+    @if (Model.Terms.Count == 0)
+    {
+        <section class="empty-terms">
+
+            <div class="empty-icon">
+                📅
+            </div>
+
+            <h2>No academic terms yet</h2>
+
+            <p>
+                Add your first academic term before creating courses.
+            </p>
+
+            <a asp-action="CreateTerm"
+               class="primary-button">
+                ＋ Add Academic Term
+            </a>
+
+        </section>
+    }
+    else
+    {
+        <section class="terms-grid">
+
+            @foreach (var term in Model.Terms)
+            {
+                <article class="term-card">
+
+                    <div class="term-icon">
+                        📚
+                    </div>
+
+                    <div class="term-content">
+
+                        <h2>
+                            @term.Name
+                        </h2>
+
+                        <div class="term-dates">
+
+                            @if (term.StartsOn.HasValue)
+                            {
+                                <span>
+                                    @term.StartsOn.Value.ToString("MMM d, yyyy")
+                                </span>
+                            }
+                            else
+                            {
+                                <span>
+                                    Start date not set
+                                </span>
+                            }
+
+                            <span class="date-arrow">
+                                →
+                            </span>
+
+                            @if (term.EndsOn.HasValue)
+                            {
+                                <span>
+                                    @term.EndsOn.Value.ToString("MMM d, yyyy")
+                                </span>
+                            }
+                            else
+                            {
+                                <span>
+                                    End date not set
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+
+        </section>
+    }
+
+</section>

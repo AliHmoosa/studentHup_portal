@@ -1,0 +1,110 @@
+@model StudentHub.Models.CreateAcademicTermViewModel
+
+@{
+    ViewData["Title"] = "Add Academic Term";
+}
+
+<link rel="stylesheet"
+      href="~/css/CreateTerm.css"
+      asp-append-version="true" />
+
+<section class="create-term-page">
+
+    <div class="create-term-header">
+
+        <a asp-action="Terms"
+           class="back-link">
+            ← Back to Academic Terms
+        </a>
+
+        <h1>Add Academic Term</h1>
+
+        <p>
+            Create an academic term for your courses.
+        </p>
+
+    </div>
+
+
+    <form asp-action="CreateTerm"
+          method="post"
+          class="term-form">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="validation-summary">
+        </div>
+
+
+        <div class="form-group">
+
+            <label asp-for="Name"></label>
+
+            <input asp-for="Name"
+                   class="form-input"
+                   placeholder="e.g. Fall 2026" />
+
+            <span asp-validation-for="Name"
+                  class="field-validation">
+            </span>
+
+        </div>
+
+
+        <div class="date-grid">
+
+            <div class="form-group">
+
+                <label asp-for="StartsOn"></label>
+
+                <input asp-for="StartsOn"
+                       class="form-input" />
+
+                <span asp-validation-for="StartsOn"
+                      class="field-validation">
+                </span>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label asp-for="EndsOn"></label>
+
+                <input asp-for="EndsOn"
+                       class="form-input" />
+
+                <span asp-validation-for="EndsOn"
+                      class="field-validation">
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a asp-action="Terms"
+               class="cancel-button">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    class="primary-button">
+                Save Term
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

@@ -1,0 +1,473 @@
+@model StudentHub.Models.CreateCourseViewModel
+
+@{
+    ViewData["Title"] = "Add Course";
+
+    var terms =
+        ViewBag.Terms as IReadOnlyList<StudentHub.Models.CourseTermOption>
+        ?? [];
+}
+
+<link rel="stylesheet"
+      href="~/css/CreateCourse.css"
+      asp-append-version="true" />
+
+<section class="create-course-page">
+
+    <div class="create-course-header">
+
+        <div>
+            <a asp-action="Courses"
+               class="back-link">
+                ← Back to Courses
+            </a>
+
+            <h1>Add Course</h1>
+
+            <p>
+                Add your course information and class schedule.
+            </p>
+        </div>
+
+    </div>
+
+
+    <form asp-action="Create"
+          method="post"
+          class="course-form">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="validation-summary">
+        </div>
+
+
+        <section class="form-section">
+
+            <div class="section-heading">
+                <h2>Course Information</h2>
+
+                <p>
+                    Enter the information for your course.
+                </p>
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-group form-group-wide">
+
+                    <label asp-for="Name"></label>
+
+                    <input asp-for="Name"
+                           class="form-input"
+                           placeholder="e.g. Human Anatomy" />
+
+                    <span asp-validation-for="Name"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Code"></label>
+
+                    <input asp-for="Code"
+                           class="form-input"
+                           placeholder="e.g. ANAT 201" />
+
+                    <span asp-validation-for="Code"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="CreditHours"></label>
+
+                    <input asp-for="CreditHours"
+                           class="form-input"
+                           type="number"
+                           min="0.5"
+                           max="100"
+                           step="0.5"
+                           placeholder="e.g. 3" />
+
+                    <span asp-validation-for="CreditHours"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Instructor"></label>
+
+                    <input asp-for="Instructor"
+                           class="form-input"
+                           placeholder="e.g. Dr. Ahmed Ali" />
+
+                    <span asp-validation-for="Instructor"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Category"></label>
+
+                    <input asp-for="Category"
+                           class="form-input"
+                           placeholder="e.g. Medical Sciences" />
+
+                    <span asp-validation-for="Category"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="TermId"></label>
+
+                    <select asp-for="TermId"
+                            class="form-input">
+
+                        <option value="">
+                            Select academic term
+                        </option>
+
+                        @foreach (var term in terms)
+                        {
+                            <option value="@term.Id">
+                                @term.Name
+                            </option>
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="TermId"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group form-group-wide">
+
+                    <label asp-for="Description"></label>
+
+                    <textarea asp-for="Description"
+                              class="form-input form-textarea"
+                              rows="5"
+                              placeholder="Describe the course...">
+                    </textarea>
+
+                    <span asp-validation-for="Description"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="form-section">
+
+            <div class="section-heading schedule-heading">
+
+                <div>
+                    <h2>Class Schedule</h2>
+
+                    <p>
+                        Add the days, times, and locations for this course.
+                    </p>
+                </div>
+
+                <button type="button"
+                        id="add-schedule"
+                        class="secondary-button">
+                    ＋ Add Class
+                </button>
+
+            </div>
+
+
+            <div id="schedule-container">
+
+                @for (var i = 0; i < Model.Schedules.Count; i++)
+                {
+                    <div class="schedule-row">
+
+                        <div class="form-group">
+
+                            <label>Day</label>
+
+                            <select name="Schedules[@i].DayOfWeek"
+                                    class="form-input">
+
+                                <option value="0"
+                                        selected="@(Model.Schedules[i].DayOfWeek == 0)">
+                                    Sunday
+                                </option>
+
+                                <option value="1"
+                                        selected="@(Model.Schedules[i].DayOfWeek == 1)">
+                                    Monday
+                                </option>
+
+                                <option value="2"
+                                        selected="@(Model.Schedules[i].DayOfWeek == 2)">
+                                    Tuesday
+                                </option>
+
+                                <option value="3"
+                                        selected="@(Model.Schedules[i].DayOfWeek == 3)">
+                                    Wednesday
+                                </option>
+
+                                <option value="4"
+                                        selected="@(Model.Schedules[i].DayOfWeek == 4)">
+                                    Thursday
+                                </option>
+
+                                <option value="5"
+                                        selected="@(Model.Schedules[i].DayOfWeek == 5)">
+                                    Friday
+                                </option>
+
+                                <option value="6"
+                                        selected="@(Model.Schedules[i].DayOfWeek == 6)">
+                                    Saturday
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Start Time</label>
+
+                            <input type="time"
+                                   name="Schedules[@i].StartTime"
+                                   value="@Model.Schedules[i].StartTime?.ToString(@"hh\:mm")"
+                                   class="form-input" />
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>End Time</label>
+
+                            <input type="time"
+                                   name="Schedules[@i].EndTime"
+                                   value="@Model.Schedules[i].EndTime?.ToString(@"hh\:mm")"
+                                   class="form-input" />
+
+                        </div>
+
+
+                        <div class="form-group location-group">
+
+                            <label>Location</label>
+
+                            <input type="text"
+                                   name="Schedules[@i].Location"
+                                   value="@Model.Schedules[i].Location"
+                                   class="form-input"
+                                   placeholder="e.g. Room 201" />
+
+                        </div>
+
+
+                        <button type="button"
+                                class="remove-schedule"
+                                aria-label="Remove class">
+                            ×
+                        </button>
+
+                    </div>
+                }
+
+            </div>
+
+        </section>
+
+
+        <div class="form-actions">
+
+            <a asp-action="Courses"
+               class="cancel-button">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    class="primary-button">
+                Save Course
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        (() => {
+
+            const container =
+                document.getElementById("schedule-container");
+
+            const addButton =
+                document.getElementById("add-schedule");
+
+
+            function updateIndexes() {
+
+                const rows =
+                    container.querySelectorAll(".schedule-row");
+
+                rows.forEach((row, index) => {
+
+                    row.querySelectorAll("[name]").forEach(input => {
+
+                        input.name =
+                            input.name.replace(
+                                /Schedules\[\d+\]/,
+                                `Schedules[${index}]`
+                            );
+
+                    });
+
+                });
+
+            }
+
+
+            function createScheduleRow() {
+
+                const index =
+                    container.querySelectorAll(".schedule-row").length;
+
+                const row =
+                    document.createElement("div");
+
+                row.className =
+                    "schedule-row";
+
+                row.innerHTML = `
+                    <div class="form-group">
+
+                        <label>Day</label>
+
+                        <select name="Schedules[${index}].DayOfWeek"
+                                class="form-input">
+
+                            <option value="0">Sunday</option>
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Start Time</label>
+
+                        <input type="time"
+                               name="Schedules[${index}].StartTime"
+                               class="form-input" />
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>End Time</label>
+
+                        <input type="time"
+                               name="Schedules[${index}].EndTime"
+                               class="form-input" />
+
+                    </div>
+
+                    <div class="form-group location-group">
+
+                        <label>Location</label>
+
+                        <input type="text"
+                               name="Schedules[${index}].Location"
+                               class="form-input"
+                               placeholder="e.g. Room 201" />
+
+                    </div>
+
+                    <button type="button"
+                            class="remove-schedule"
+                            aria-label="Remove class">
+                        ×
+                    </button>
+                `;
+
+                container.appendChild(row);
+
+            }
+
+
+            addButton.addEventListener(
+                "click",
+                createScheduleRow);
+
+
+            container.addEventListener(
+                "click",
+                event => {
+
+                    const button =
+                        event.target.closest(".remove-schedule");
+
+                    if (!button) {
+                        return;
+                    }
+
+                    const rows =
+                        container.querySelectorAll(".schedule-row");
+
+                    if (rows.length === 1) {
+                        return;
+                    }
+
+                    button.closest(".schedule-row").remove();
+
+                    updateIndexes();
+
+                });
+
+        })();
+
+    </script>
+}

@@ -1,0 +1,1150 @@
+/* ============================================================
+   STUDENTHUB — WEEKLY SCHEDULE
+   ============================================================ */
+
+.weekly-schedule-page {
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.weekly-hero {
+    position: relative;
+
+    min-height: 91px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    overflow: hidden;
+
+    padding: 12px 19px;
+
+    border-radius: 8px;
+
+    border: 1px solid #e5eaf0;
+
+    background:
+        linear-gradient(90deg,
+            #ffffff 0%,
+            #ffffff 43%,
+            rgba(245, 249, 252, 0.8) 100%);
+}
+
+.weekly-hero::after {
+    content: "";
+
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+    width: 55%;
+    height: 100%;
+
+    opacity: 0.18;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(ellipse at center,
+            #7f9d9d,
+            transparent 69%);
+}
+
+.weekly-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.weekly-hero h1 {
+    margin: 0;
+
+    color: #0b1874;
+
+    font-size: 30px;
+    line-height: 1.15;
+
+    font-weight: 700;
+
+    letter-spacing: -0.8px;
+}
+
+.weekly-hero p {
+    margin: 4px 0 0;
+
+    color: #101e79;
+
+    font-size: 12px;
+}
+
+.weekly-hero-message {
+    position: relative;
+    z-index: 3;
+
+    margin-right: 15px;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    line-height: 1.6;
+
+    text-align: right;
+}
+
+
+/* ============================================================
+   TOOLBAR
+   ============================================================ */
+
+.weekly-toolbar {
+    min-height: 62px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 0;
+}
+
+.semester-selector,
+.today-button,
+.week-nav-button,
+.export-schedule-button,
+.schedule-view-button {
+    height: 39px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dce4ed;
+
+    border-radius: 7px;
+
+    color: #0d1c73;
+
+    background: #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.semester-selector {
+    min-width: 196px;
+
+    justify-content: flex-start;
+
+    gap: 10px;
+
+    padding: 0 13px;
+}
+
+.semester-selector svg {
+    width: 20px;
+    height: 20px;
+
+    fill: none;
+
+    stroke: #1673e8;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.semester-selector .toolbar-chevron {
+    width: 15px;
+    height: 15px;
+
+    margin-left: auto;
+
+    stroke: #0d1c73;
+}
+
+.week-navigation {
+    display: flex;
+
+    gap: 6px;
+}
+
+.week-nav-button {
+    width: 39px;
+
+    font-size: 25px;
+
+    font-weight: 300;
+}
+
+.today-button {
+    min-width: 70px;
+
+    padding: 0 12px;
+}
+
+.toolbar-spacer {
+    flex: 1;
+}
+
+.schedule-view-switcher {
+    display: flex;
+
+    height: 39px;
+
+    overflow: hidden;
+
+    border: 1px solid #dce4ed;
+
+    border-radius: 7px;
+}
+
+.schedule-view-button {
+    min-width: 91px;
+
+    height: 37px;
+
+    border: 0;
+
+    border-radius: 0;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.schedule-view-button.active {
+    color: #ffffff;
+
+    background:
+        linear-gradient(135deg,
+            #075f5c,
+            #0b7d75);
+}
+
+.export-schedule-button {
+    gap: 7px;
+
+    padding: 0 14px;
+
+    color: #0c257b;
+}
+
+.export-schedule-button svg {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+
+.weekly-content {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr) 310px;
+
+    gap: 15px;
+
+    align-items: start;
+}
+
+
+/* ============================================================
+   CALENDAR CARD
+   ============================================================ */
+
+.weekly-calendar-card {
+    min-width: 0;
+
+    overflow: auto;
+
+    border: 1px solid #e2e8ef;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+}
+
+.calendar-grid {
+    display: grid;
+
+    grid-template-columns:
+        85px repeat(7, minmax(112px, 1fr));
+
+    min-width: 870px;
+}
+
+.calendar-header {
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-right: 1px solid #e3e9ef;
+    border-bottom: 1px solid #dce4eb;
+
+    color: #111e71;
+
+    background: #f9fbfd;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-align: center;
+}
+
+.calendar-header:last-child {
+    border-right: none;
+}
+
+.calendar-header small {
+    display: none;
+}
+
+.calendar-header.current-day {
+    color: #0c7c72;
+
+    background: #edf9f6;
+}
+
+.calendar-time-header {
+    color: #4a5b71;
+}
+
+.calendar-time-cell {
+    min-height: 64px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    padding-top: 11px;
+
+    border-right: 1px solid #e4eaf0;
+    border-bottom: 1px solid #e7ecf1;
+
+    color: #3b55a0;
+
+    background: #fbfcfe;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+}
+
+.calendar-slot {
+    position: relative;
+
+    min-height: 64px;
+
+    border-right: 1px solid #e7ecf1;
+    border-bottom: 1px solid #e7ecf1;
+
+    background:
+        linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.9),
+            rgba(252, 253, 254, 0.9));
+}
+
+.calendar-slot:nth-child(8n) {
+    border-right: none;
+}
+
+
+/* ============================================================
+   CLASS BLOCK
+   ============================================================ */
+
+.schedule-class {
+    position: absolute;
+
+    top: 3px;
+    left: 4px;
+    right: 4px;
+
+    z-index: 4;
+
+    min-height: 57px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 7px 8px;
+
+    overflow: hidden;
+
+    border-left: 4px solid currentColor;
+
+    border-radius: 5px;
+
+    color: #14347c;
+
+    background: #e4efff;
+
+    box-shadow:
+        0 1px 3px rgba(30, 60, 90, 0.05);
+}
+
+.schedule-class strong {
+    display: block;
+
+    color: inherit;
+
+    font-size: 11px;
+    line-height: 1.25;
+
+    font-weight: 700;
+}
+
+.schedule-class span {
+    margin-top: 2px;
+
+    color: #173b77;
+
+    font-size: 9px;
+    line-height: 1.3;
+}
+
+.schedule-class small {
+    margin-top: 3px;
+
+    color: #365182;
+
+    font-size: 8.5px;
+    line-height: 1.2;
+}
+
+.schedule-class.blue {
+    color: #3487e8;
+    background: #e4efff;
+}
+
+.schedule-class.blue strong,
+.schedule-class.blue span {
+    color: #14347c;
+}
+
+.schedule-class.green {
+    color: #29bf88;
+    background: #dff7ed;
+}
+
+.schedule-class.green strong,
+.schedule-class.green span {
+    color: #075947;
+}
+
+.schedule-class.amber {
+    color: #eeb330;
+    background: #fff2d4;
+}
+
+.schedule-class.amber strong,
+.schedule-class.amber span {
+    color: #6f4a00;
+}
+
+.schedule-class.purple {
+    color: #9238ed;
+    background: #eee2ff;
+}
+
+.schedule-class.purple strong,
+.schedule-class.purple span {
+    color: #4d207e;
+}
+
+.schedule-class.red {
+    color: #ef5d68;
+    background: #ffe4e6;
+}
+
+.schedule-class.red strong,
+.schedule-class.red span {
+    color: #7e2630;
+}
+
+
+/* ============================================================
+   RIGHT SIDEBAR
+   ============================================================ */
+
+.weekly-sidebar {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+.weekly-side-card {
+    padding: 13px;
+
+    border: 1px solid #e3e9ef;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+}
+
+.side-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    padding-bottom: 9px;
+
+    border-bottom: 1px solid #e6ebef;
+}
+
+.side-card-heading h2 {
+    margin: 0;
+
+    color: #101d72;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+.side-card-heading p {
+    margin: 3px 0 0;
+
+    color: #162c82;
+
+    font-size: 11px;
+}
+
+.today-class-count {
+    padding-top: 3px;
+
+    color: #3854a4;
+
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   TODAY CLASSES
+   ============================================================ */
+
+.today-class-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.today-class-item {
+    min-height: 73px;
+
+    display: grid;
+
+    grid-template-columns:
+        11px minmax(0, 1fr) 12px;
+
+    align-items: center;
+
+    gap: 9px;
+
+    border-bottom: 1px solid #edf0f3;
+}
+
+.today-class-item:last-child {
+    border-bottom: none;
+}
+
+.course-color {
+    width: 10px;
+    height: 10px;
+
+    display: block;
+
+    border-radius: 50%;
+
+    background: #3487e8;
+}
+
+.course-color.blue {
+    background: #3487e8;
+}
+
+.course-color.green {
+    background: #29bf88;
+}
+
+.course-color.amber {
+    background: #f5b72d;
+}
+
+.course-color.purple {
+    background: #9639ed;
+}
+
+.course-color.red {
+    background: #ef5d68;
+}
+
+.today-class-content {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.today-class-content strong {
+    color: #101d72;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.today-class-content span {
+    margin-top: 3px;
+
+    color: #435b9e;
+
+    font-size: 10px;
+}
+
+.today-class-content small {
+    margin-top: 4px;
+
+    color: #405b9c;
+
+    font-size: 9px;
+}
+
+.today-arrow {
+    color: #101d72;
+
+    font-size: 22px;
+
+    font-weight: 300;
+}
+
+.no-today-classes {
+    padding: 20px 4px;
+
+    color: #718096;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+.calendar-link {
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 9px;
+
+    border: 1px solid #d6e0ea;
+
+    border-radius: 5px;
+
+    color: #101d72;
+
+    background: #ffffff;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.calendar-link svg {
+    width: 18px;
+    height: 18px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.6;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* ============================================================
+   COURSE SUMMARY
+   ============================================================ */
+
+.course-summary-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.course-summary-item {
+    min-height: 68px;
+
+    display: grid;
+
+    grid-template-columns:
+        10px minmax(0, 1fr);
+
+    gap: 9px;
+
+    align-items: center;
+
+    border-bottom: 1px solid #edf0f3;
+}
+
+.course-summary-item:last-child {
+    border-bottom: none;
+}
+
+.course-summary-content {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.course-summary-content strong {
+    color: #101d72;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.course-summary-content span {
+    margin-top: 2px;
+
+    color: #425a9d;
+
+    font-size: 9px;
+}
+
+.course-summary-content small {
+    margin-top: 3px;
+
+    color: #5067a3;
+
+    font-size: 8.5px;
+
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   CONFLICTS
+   ============================================================ */
+
+.conflict-card {
+    padding-bottom: 13px;
+}
+
+.conflict-success {
+    min-height: 65px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 9px;
+
+    padding: 10px;
+
+    border-radius: 7px;
+
+    background: #eaf8f3;
+}
+
+.conflict-success-icon {
+    width: 31px;
+    height: 31px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    border: 2px solid #34b98a;
+
+    border-radius: 50%;
+
+    color: #19956e;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.conflict-success strong,
+.conflict-warning strong {
+    display: block;
+
+    color: #075c4a;
+
+    font-size: 11px;
+}
+
+.conflict-success small,
+.conflict-warning small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #50756b;
+
+    font-size: 9px;
+}
+
+.conflict-warning {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-top: 9px;
+
+    padding: 10px;
+
+    border-radius: 7px;
+
+    background: #fff0f0;
+}
+
+.conflict-icon {
+    width: 31px;
+    height: 31px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    background: #ef5d68;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   SUMMARY CARDS
+   ============================================================ */
+
+.weekly-summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1.25fr;
+
+    gap: 14px;
+
+    margin-top: 15px;
+}
+
+.weekly-summary-card {
+    min-height: 108px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 15px;
+
+    border: 1px solid #e3e9ef;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+}
+
+.summary-icon {
+    width: 57px;
+    height: 57px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    border-radius: 9px;
+}
+
+.summary-icon svg {
+    width: 31px;
+    height: 31px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.summary-icon.green {
+    color: #168665;
+
+    background: #e5f7f0;
+}
+
+.summary-icon.purple {
+    color: #9639ed;
+
+    background: #f0e4ff;
+}
+
+.summary-icon.blue {
+    color: #1475e6;
+
+    background: #e5f0ff;
+}
+
+.weekly-summary-card>div:last-child {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.weekly-summary-card span {
+    color: #101d72;
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+.weekly-summary-card strong {
+    margin-top: 4px;
+
+    color: #0c1d77;
+
+    font-size: 22px;
+
+    font-weight: 700;
+}
+
+.weekly-summary-card small {
+    margin-top: 2px;
+
+    color: #5267a0;
+
+    font-size: 9px;
+}
+
+.semester-summary strong {
+    font-size: 16px;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   RESPONSIVE — 1200PX
+   ============================================================ */
+
+@media (max-width: 1200px) {
+
+    .weekly-content {
+        grid-template-columns:
+            minmax(0, 1fr) 270px;
+    }
+
+    .calendar-grid {
+        grid-template-columns:
+            72px repeat(7, minmax(100px, 1fr));
+    }
+
+    .weekly-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .toolbar-spacer {
+        display: none;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — 950PX
+   ============================================================ */
+
+@media (max-width: 950px) {
+
+    .weekly-content {
+        grid-template-columns: 1fr;
+    }
+
+    .weekly-sidebar {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .conflict-card {
+        grid-column: 1 / -1;
+    }
+
+    .weekly-summary-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .semester-summary {
+        grid-column: 1 / -1;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — 700PX
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    .weekly-hero {
+        min-height: 105px;
+
+        padding: 15px;
+    }
+
+    .weekly-hero h1 {
+        font-size: 25px;
+    }
+
+    .weekly-hero p {
+        max-width: 460px;
+
+        font-size: 10px;
+    }
+
+    .weekly-hero-message {
+        display: none;
+    }
+
+    .weekly-toolbar {
+        gap: 7px;
+    }
+
+    .semester-selector {
+        min-width: 155px;
+    }
+
+    .export-schedule-button {
+        display: none;
+    }
+
+    .weekly-sidebar {
+        grid-template-columns: 1fr;
+    }
+
+    .conflict-card {
+        grid-column: auto;
+    }
+
+    .weekly-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .semester-summary {
+        grid-column: auto;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — 520PX
+   ============================================================ */
+
+@media (max-width: 520px) {
+
+    .weekly-toolbar {
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .semester-selector {
+        width: 100%;
+    }
+
+    .week-navigation {
+        justify-self: end;
+    }
+
+    .today-button {
+        width: 100%;
+    }
+
+    .schedule-view-switcher {
+        width: 100%;
+    }
+
+    .schedule-view-button {
+        flex: 1;
+    }
+
+    .weekly-calendar-card {
+        border-radius: 5px;
+    }
+}
+
+
+/* ============================================================
+   RTL PREPARATION
+   ============================================================ */
+
+html[dir="rtl"] .weekly-schedule-page {
+    direction: rtl;
+}
+
+html[dir="rtl"] .weekly-hero-message {
+    margin-right: 0;
+    margin-left: 15px;
+
+    text-align: left;
+}
+
+html[dir="rtl"] .schedule-class {
+    border-left: none;
+    border-right: 4px solid currentColor;
+}
+
+html[dir="rtl"] .today-class-content,
+html[dir="rtl"] .course-summary-content {
+    text-align: right;
+}
